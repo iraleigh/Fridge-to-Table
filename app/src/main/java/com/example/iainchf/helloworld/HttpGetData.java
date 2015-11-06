@@ -3,6 +3,7 @@ package com.example.iainchf.helloworld;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 public class HttpGetData {
     private static final String DEBUG_TAG = "HttpExample";
     String url;
-    InputStream data;
+    String data;
 
     public HttpGetData(){
         this.url = "";
@@ -35,8 +36,8 @@ public class HttpGetData {
         new DownloadWebpageTask().execute(this.url);
     }
 
-    public InputStream getData(){
-        return data;
+    public String getData(){
+        return this.data;
     }
 
     private String downloadUrl(String myurl) throws IOException {
@@ -56,9 +57,10 @@ public class HttpGetData {
             conn.connect();
             int response = conn.getResponseCode();
             Log.d(DEBUG_TAG, "The response is: " + response);
-            is = conn.getInputStream();
+            is = new BufferedInputStream(conn.getInputStream());
             // Convert the InputStream into a string
-            data = is;
+            data = readIt(is,12000);
+            is.close();
             return "Data filled";
 
             // Makes sure that the InputStream is closed after the app is

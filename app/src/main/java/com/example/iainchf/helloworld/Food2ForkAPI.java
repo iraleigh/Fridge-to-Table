@@ -7,6 +7,8 @@ import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.example.iainchf.helloworld.RecipesProviderAPI;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.List;
 /**
  * Created by iainchf on 9/30/15.
  */
-public class Food2ForkAPI extends RecipesProviderAPI{
+public class Food2ForkAPI extends RecipesProviderAPI {
     private List<Recipe> recipeList;
     private String [] ingredients;
     private String url;
@@ -62,7 +65,7 @@ public class Food2ForkAPI extends RecipesProviderAPI{
 
         while(food2ForkGetter.getData() == null);
 
-        InputStream json = food2ForkGetter.getData();
+        String json = food2ForkGetter.getData();
 
         ids = parseJsonForID(json);
 
@@ -82,17 +85,18 @@ public class Food2ForkAPI extends RecipesProviderAPI{
             for (int i = placeInIdList; i < placeInIdList + 5 && i < ids.size(); i++) {
                 HttpGetData food2ForkRecipeGetter = new HttpGetData(createGetURL(ids.get(i)));
                 while(food2ForkRecipeGetter.getData() == null);
-                InputStream json = food2ForkRecipeGetter.getData();
+                String json = food2ForkRecipeGetter.getData();
                 recipeList.add(parseJsonForRecipes(json));
             }
+            int oldPlaceInList = placeInIdList;
             placeInIdList += 5;
-            return recipeList;
+            return recipeList.subList(oldPlaceInList,placeInIdList);
         } else {
             return new ArrayList<>();
         }
     }
 
-    private List<String> parseJsonForID(InputStream json){
+    private List<String> parseJsonForID(String json){
         Food2ForkIdJsonReader idReader = new Food2ForkIdJsonReader();
         List<String> ids = new ArrayList<>();
         try {
@@ -103,7 +107,7 @@ public class Food2ForkAPI extends RecipesProviderAPI{
             return ids;
         }
     }
-    private Recipe parseJsonForRecipes(InputStream json){
+    private Recipe parseJsonForRecipes(String json){
         Food2ForkRecipeJsonReader recipeReader = new Food2ForkRecipeJsonReader();
         Recipe recipe = new Recipe();
         try {
@@ -112,13 +116,7 @@ public class Food2ForkAPI extends RecipesProviderAPI{
         } catch (IOException e){
             return recipe;
         } finally {
-            try {
-                json.close();
-            } catch (IOException ioe) {
-                Log.e(PARSE_JSON_FOR_RECIPE_TAG,ioe.getMessage());
-            } finally{
-                return recipe;
-            }
+            return recipe;
         }
     }
 
@@ -137,8 +135,8 @@ public class Food2ForkAPI extends RecipesProviderAPI{
     private class Food2ForkIdJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public List<String> readJsonStream(InputStream in) throws IOException{
-            com.google.gson.stream.JsonReader jsonReader = new com.google.gson.stream.JsonReader(new InputStreamReader(in));
+        public List<String> readJsonStream(String in) throws IOException{
+            com.google.gson.stream.JsonReader jsonReader = new com.google.gson.stream.JsonReader(new StringReader(in));
             try{
                 return readMessagesArray(jsonReader);
             }finally{
@@ -206,8 +204,8 @@ public class Food2ForkAPI extends RecipesProviderAPI{
     }
     private class Food2ForkRecipeJsonReader {
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public Recipe readJsonStream(InputStream in) throws IOException{
-            com.google.gson.stream.JsonReader jsonReader = new com.google.gson.stream.JsonReader(new InputStreamReader(in));
+        public Recipe readJsonStream(String in) throws IOException{
+            com.google.gson.stream.JsonReader jsonReader = new com.google.gson.stream.JsonReader(new StringReader(in));
             try{
                 return readMessagesArray(jsonReader);
             }finally{
