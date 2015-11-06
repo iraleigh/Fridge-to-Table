@@ -27,6 +27,12 @@ proguard/
 *.log
 
 .idea/
-*.iml
+t5.iml
 
-gradle.properties
+/build.gradle
+/gradle.properties
+/gradlew
+/gradlew.bat
+/local.properties
+/README.md
+/settings.gradle
