@@ -1,4 +1,4 @@
-package com.example.iainchf.helloworld;
+package com.example.almondmilk.helloworld;
 
 /**
  * Created by alvinlu on 10/14/15.
