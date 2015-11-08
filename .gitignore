@@ -16,7 +16,7 @@ gen/
 .gradle/
 build/
 /*/build/
-
+gradle/
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -25,3 +25,14 @@ proguard/
 
 # Log Files
 *.log
+
+.idea/
+t5.iml
+
+/build.gradle
+/gradle.properties
+/gradlew
+/gradlew.bat
+/local.properties
+/README.md
+/settings.gradle
