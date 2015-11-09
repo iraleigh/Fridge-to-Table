@@ -1,4 +1,4 @@
-package com.example.almondmilk.helloworld;
+package com.example.iainchf.helloworld;
 
 /**
  * Created by alvinlu on 10/14/15.
@@ -13,6 +13,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class YummlyAPI {
 
         while(yummlyGetter.getData() == null);
 
-        InputStream json = yummlyGetter.getData();
+        String json = yummlyGetter.getData();
         recipeList = parseJSON(json);
     }
 
@@ -54,7 +55,7 @@ public class YummlyAPI {
         for (String id: ids) {
             String idURL = "http://api.yummly.com/v1/api/recipe/" + id + "?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
             HttpGetData idData = new HttpGetData(idURL);
-            InputStream json = idData.getData();
+            String json = idData.getData();
             recipeList.add(parseJsonFromID(json));
         }
 
@@ -69,26 +70,20 @@ public class YummlyAPI {
         return tempURL;
     }
 
-    private List<Recipe> parseJSON(InputStream json){
+    private List<Recipe> parseJSON(String json){
         YummlyIDJsonReader yummlyReader = new YummlyIDJsonReader();
 
         try {
             return yummlyReader.readJsonStream(json);
         } catch (IOException e){
             return new ArrayList<>();
-        } finally{
-            try{
-                json.close();
-            } catch(IOException e){
-                Log.e(PARSEJSON_TAG, "JSON did not close correctly.");
-            }
         }
     }
     private class YummlyIDJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public List<Recipe> readJsonStream(InputStream in) throws IOException{
-            try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+        public List<Recipe> readJsonStream(String in) throws IOException{
+            try (JsonReader reader = new JsonReader(new StringReader(in))) {
                 return readMessagesArray(reader);
             }
         }
@@ -166,7 +161,7 @@ public class YummlyAPI {
     }
 
 
-    private Recipe parseJsonFromID(InputStream json){
+    private Recipe parseJsonFromID(String json){
         YummlyJsonReader yummlyReader = new YummlyJsonReader();
 
         try {
@@ -174,14 +169,7 @@ public class YummlyAPI {
 
         } catch (IOException e){
             return new Recipe();
-        } finally{
-            try{
-                json.close();
-            } catch(IOException e){
-
-                Log.e(PARSEJSON_TAG, "JSON did not close correctly.");
-            }
-        }
+        } 
 
     }
 
@@ -189,8 +177,8 @@ public class YummlyAPI {
     private class YummlyJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public Recipe readJsonStream(InputStream in) throws IOException{
-            try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+        public Recipe readJsonStream(String in) throws IOException{
+            try (JsonReader reader = new JsonReader(new StringReader(in))) {
                 return readMessagesArray(reader);
             }
         }
