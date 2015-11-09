@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_recipe_page">RecipePage</string>
+    <string name="title_activity_cook_book_dummy">CookBookDummyActivity</string>
+    <string name="title_activity_home_dummy">HomeDummyActivity</string>
+    <string name="title_activity_fridge_dummy">FridgeDummyActivity</string>
 </resources>
