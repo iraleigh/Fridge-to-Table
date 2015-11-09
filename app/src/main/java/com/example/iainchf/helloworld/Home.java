@@ -29,7 +29,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void goToCookBook (View v) {
-        Intent in = new Intent(this, Recipe.class);
+        Intent in = new Intent(this, Cookbook.class);
         startActivity(in);
     }
 
