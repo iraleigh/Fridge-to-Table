@@ -26,6 +26,9 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+
+        </activity>
+        <activity android:name=".Home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +41,22 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Get_Recipes" >
+        </activity>
+        <activity android:name=".Recipe_Page" >
+        </activity>
+        <activity android:name=".Cookbook" >
+        </activity>
+        <activity android:name=".Find_Ingredients" >
+        </activity>
+        <activity android:name=".Refrigerator" >
+        </activity>
+        <activity android:name=".Never_Cookbook" >
+        </activity>
+        <activity android:name=".Google_Store_Find" >
+        </activity>
+        <activity android:name=".Amazon_Ordering" >
         </activity>
     </application>
 
