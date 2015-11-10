@@ -79,6 +79,7 @@ public class YummlyAPI {
             return new ArrayList<>();
         }
     }
+
     private class YummlyIDJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -159,7 +160,6 @@ public class YummlyAPI {
         }
 
     }
-
 
     private Recipe parseJsonFromID(String json){
         YummlyJsonReader yummlyReader = new YummlyJsonReader();
