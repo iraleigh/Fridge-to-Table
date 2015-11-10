@@ -14,12 +14,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 
 public class MapsActivity extends FragmentActivity {
 
     public static boolean mMapIsTouched = false;
     private GoogleMap mMap;
-    public int markCount = 0;
+    //for placing markers, not currently used.
+    // public int markCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,11 +108,22 @@ public class MapsActivity extends FragmentActivity {
         String snippetLatLong = latitude + ", " + longitude;
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet(snippetLatLong));
 
+        gPlacesAPI gPlace = new gPlacesAPI(latitude, longitude);
+        ArrayList<Places> placesList = gPlace.getList();
+        for(int i=0;i<placesList.size();i++){
+            double lat = placesList[i].getLat;
+            double lng = placesList[i].getLng;
+            String name = placesList[i].getName();
+            String address = placesList[i].getAddress();
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(name).snippet(address));
+        }
+
         /*
          * found out about setOnMapClickListener() from stack overflow
          * http://stackoverflow.com/questions/14013002/google-maps-android-api-v2-detect-touch-on-map
          * but added some of my own code for the title and snippet of each marker.
          */
+      /*
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng arg0) {
@@ -121,7 +135,7 @@ public class MapsActivity extends FragmentActivity {
                 mMap.addMarker(new MarkerOptions().position(nMark).title(markTitle).snippet(markSnippet));
             }
         });
-
+      */
     }
 
 
