@@ -202,6 +202,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
 
 
     }
+
     private class Food2ForkRecipeJsonReader {
         @TargetApi(Build.VERSION_CODES.KITKAT)
         public Recipe readJsonStream(String in) throws IOException{
