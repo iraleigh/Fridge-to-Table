@@ -108,8 +108,8 @@ public class MapsActivity extends FragmentActivity {
         String snippetLatLong = latitude + ", " + longitude;
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet(snippetLatLong));
 
-        gPlacesAPI gPlace = new gPlacesAPI(latitude, longitude);
-        ArrayList<Places> placesList = gPlace.getList();
+        gPlacesAPI gPlace = new gPlacesAPI(longitude, latitude);
+        ArrayList<Places> placesList = gPlace.getPlaces();
         for(int i=0;i<placesList.size();i++){
             double lat = placesList[i].getLat;
             double lng = placesList[i].getLng;
