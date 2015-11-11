@@ -71,10 +71,6 @@
             android:name=".FridgeDummyActivity"
             android:label="@string/title_activity_fridge_dummy" >
         </activity>
-        <activity
-            android:name=".TestingDBIntegration"
-            android:label="@string/title_activity_testing_dbintegration" >
-        </activity>
 
     </application>
 
