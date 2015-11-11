@@ -15,13 +15,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapsActivity extends FragmentActivity {
 
     public static boolean mMapIsTouched = false;
     private GoogleMap mMap;
-    //for placing markers, not currently used.
+    //for placing markers, not currently being used.
     // public int markCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +110,12 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet(snippetLatLong));
 
         gPlacesAPI gPlace = new gPlacesAPI(longitude, latitude);
-        ArrayList<Places> placesList = gPlace.getPlaces();
-        for(int i=0;i<placesList.size();i++){
-            double lat = placesList[i].getLat;
-            double lng = placesList[i].getLng;
-            String name = placesList[i].getName();
-            String address = placesList[i].getAddress();
+        List<Places> placesList = gPlace.getList();
+        for(Places p : placesList){
+            double lat = p.getLat();
+            double lng = p.getLng();
+            String name = p.getName();
+            String address = p.getAddress();
             mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(name).snippet(address));
         }
 

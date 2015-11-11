@@ -32,6 +32,8 @@ public class gPlacesAPI {
         placesList = parseJSON(json);
     }
 
+    public List<Places> getList(){return placesList;}
+
     private List<Places> parseJSON(String json){
         gPlacesJsonReader placesreader = new gPlacesJsonReader();
         try {
