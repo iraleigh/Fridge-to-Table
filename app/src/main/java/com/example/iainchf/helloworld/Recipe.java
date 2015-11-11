@@ -78,6 +78,7 @@ public class Recipe {
                         "**********************************************" + "\n\n";
         return recipe;
     }
+
     private String listIngredients(){
         String listOfIngredients = "";
         for (String ingredient : ingredientList){
