@@ -73,16 +73,16 @@ public class RecipePage extends AppCompatActivity
 
     public void openHomePage(View v)
     {
-        startActivity(new Intent(RecipePage.this, HomeDummyActivity.class));
+        startActivity(new Intent(RecipePage.this, Home.class));
     }
 
     public void openCookBookPage(View v)
     {
-        startActivity(new Intent(RecipePage.this, CookBookDummyActivity.class));
+        startActivity(new Intent(RecipePage.this, Cookbook.class));
     }
 
     public void openFridgePage(View v) {
-        startActivity(new Intent(RecipePage.this, FridgeDummyActivity.class));
+        startActivity(new Intent(RecipePage.this, Refrigerator.class));
     }
     public void toastMessage(View v)
     {
