@@ -7,12 +7,9 @@ package com.example.iainchf.helloworld;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.JsonReader;
-import android.util.JsonToken;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,43 +21,60 @@ import java.util.List;
 public class YummlyAPI {
 
     private List<Recipe> recipeList;
-    private List<String> ingredients;
+    private String [] ingredients;
     private String url;
-    private static final String PARSEJSON_TAG = "parse JSON";
-    private String []ids = new String [5];
-    private List messages = new ArrayList();
+    private List<String> ids;
+    private int placeInIdList;
+    public static final String PARSE_JSON_FOR_ID_TAG = "Inside ";
+    public static final String PARSE_JSON_FOR_RECIPE_TAG = "Inside ";
 
-    //default constructor
+    //Default Constructor
     public YummlyAPI(){
 
         url = "http://api.yummly.com/v1/api/recipes?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
+        ingredients = new String[0];
+    } //done
 
-    }
-
-    public YummlyAPI(List<String> ingredients){
+    //Overload Constructor
+    public YummlyAPI(String[] ingredients){
         this.ingredients = ingredients;
-        url = createURL();
+        this.url = createURL();
         HttpGetData yummlyGetter = new HttpGetData(url);
 
         while(yummlyGetter.getData() == null);
 
         String json = yummlyGetter.getData();
-        recipeList = parseJSON(json);
-    }
 
-    //get Recipe
-    private void getRecipeByID(){
-        //TODO create proper url
-        //String URL = "";
-        for (String id: ids) {
-            String idURL = "http://api.yummly.com/v1/api/recipe/" + id + "?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
-            HttpGetData idData = new HttpGetData(idURL);
-            String json = idData.getData();
-            recipeList.add(parseJsonFromID(json));
+        ids = parseJsonForID(json);
+
+        placeInIdList = 0;
+    } //done
+
+    public List<String> parseJsonForID(String json){
+        YummlyIdJsonReader idReader = new YummlyIdJsonReader();
+        List<String> ids = new ArrayList<>();
+
+        try{
+            ids = idReader.readJsonStream(json);
+        } catch (IOException ioe){
+            Log.e("In parseJsonForID", ioe.getMessage());
+        } finally{
+            return ids;
         }
+    } //done
+    public Recipe parseJsonForRecipes(String json){
+        YummlyRecipeJsonReader recipeReader = new YummlyRecipeJsonReader();
+        Recipe recipe = new Recipe();
+        try{
+            recipe = recipeReader.readJsonStream(json);
+        }catch(IOException e){
+            return recipe;
+        }finally{
+            return recipe;
+        }
+    } //done
 
-    }
-
+    //Creates URL
     private String createURL(){
         String tempURL = "http://api.yummly.com/v1/api/recipes?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
         // for loop to traverse through the ingredients
@@ -68,189 +82,189 @@ public class YummlyAPI {
             tempURL += "&allowedIngredient[]=" + i;
         }
         return tempURL;
-    }
+    } //done
 
-    private List<Recipe> parseJSON(String json){
-        YummlyIDJsonReader yummlyReader = new YummlyIDJsonReader();
-
-        try {
-            return yummlyReader.readJsonStream(json);
-        } catch (IOException e){
-            return new ArrayList<>();
-        }
-    }
-    private class YummlyIDJsonReader {
+    private class YummlyIdJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public List<Recipe> readJsonStream(String in) throws IOException{
-            try (JsonReader reader = new JsonReader(new StringReader(in))) {
-                return readMessagesArray(reader);
+        public List<String> readJsonStream(String in) throws IOException {
+            JsonReader jsonReader = new JsonReader(new StringReader(in));
+            try {
+                return readMessagesArray(jsonReader);
+            } finally {
+                try {
+                    jsonReader.close();
+                } catch (Exception e) {
+                }
             }
         }
 
         @SuppressWarnings("unchecked")
-        public List<Recipe> readMessagesArray(JsonReader reader) throws IOException {
-            List<Recipe> recipes = new ArrayList();
-
-            reader.beginArray();
-            while (reader.hasNext()) {
-                recipes.add(readRecipes(reader));
-            }
-            reader.endArray();
-            return recipes;
-        }
-
-        public Recipe readRecipes(JsonReader reader) throws IOException{
-
-            String id;
-            int i = 0;
-            //Ingredient[] ingredientList;
-
+        public List<String> readMessagesArray(JsonReader reader) throws IOException {
+            //List<Recipe> recipes = new ArrayList();
+            List<String> ids = new ArrayList<>();
             reader.beginObject();
+            while(reader.hasNext()){
+                String name = reader.nextName();
 
-            //while (reader.hasNext() && i < 5){
+                if(name.equals("matches")){
+                    reader.beginArray();
 
-            String name = reader.nextName();
-
-            if(name.equals("matches")) {
-
-                reader.beginArray();
-
-                while (reader.hasNext() && i < 5) {
-                    if(name.equals("imageUrlBySize")){
-                        reader.skipValue();
-                    } else if(name.equals("sourceDisplayName")){
-                        reader.skipValue();
-                    } else if(name.equals("ingredients")){
-                        reader.skipValue();
-                    } else if(name.equals("id")) {
-                        ids[i] = reader.nextString();
-                        i++;
-                    } else if(name.equals("smallImageUrls")){
-                        reader.skipValue();
-                    } else if(name.equals("recipeName")){
-                        reader.skipValue();
-                    } else if(name.equals("totalTimeInSeconds")){
-                        reader.skipValue();
-                    } else if(name.equals("attributes")){
-                        reader.skipValue();
-                    } else if(name.equals("flavors")){
-                        reader.skipValue();
-                    } else if(name.equals("rating")){
-                        reader.skipValue();
+                    while(reader.hasNext()){
+                        try{
+                            ids.add(getID(reader));
+                        }catch(Exception e){
+                            return ids;
+                        }
                     }
-                    else{
-                        reader.skipValue();
-                    }
+                    reader.endArray();
+                }else if(name.equals("criteria")){
+                    reader.skipValue();
+                }else if(name.equals("facetCounts")){
+                    reader.skipValue();
+                }else if(name.equals("totalMatchCount")){
+                    reader.skipValue();
+                }else if(name.equals("attribution")){
+                    reader.skipValue();
                 }
-            } else if(name.equals("criteria")) {
-                reader.skipValue();
-            } else if(name.equals("totalMatchCount")){
-                reader.skipValue();
-            } else if(name.equals("attribution")){
-                reader.skipValue();
-            } else {
-                reader.skipValue();
             }
-            //}
-
             reader.endObject();
-            return new Recipe();
+            return ids;
+        }
+        public String getID(JsonReader reader) throws IOException{
+            String tempId = null;
+            reader.beginObject();
+            while(reader.hasNext()){
+                String name = reader.nextName();
+                if(name.equals("imageUrlsBySize")){
+                    reader.skipValue();
+                }else if(name.equals("sourceDisplayName")){
+                    reader.skipValue();
+                }else if(name.equals("ingredients")){
+                    reader.skipValue();
+                }else if(name.equals("id")){
+                    tempId = reader.nextString();
+                }else if(name.equals("smallImageUrls")){
+                    reader.skipValue();
+                }else if(name.equals("recipeName")){
+                    reader.skipValue();
+                }else if(name.equals("totalTimeInSeconds")){
+                    reader.skipValue();
+                }else if(name.equals("attributes")){
+                    reader.skipValue();
+                }else if(name.equals("flavors")){
+                    reader.skipValue();
+                }else if(name.equals("rating")){
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            return new String(tempId);
         }
 
-    }
-
-
-    private Recipe parseJsonFromID(String json){
-        YummlyJsonReader yummlyReader = new YummlyJsonReader();
-
-        try {
-            return yummlyReader.readJsonStream(json);
-
-        } catch (IOException e){
-            return new Recipe();
-        } 
-
-    }
+    } //done
 
     //TODO customize to read Recipe from Yummly
-    private class YummlyJsonReader {
+    private class YummlyRecipeJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
         public Recipe readJsonStream(String in) throws IOException{
-            try (JsonReader reader = new JsonReader(new StringReader(in))) {
-                return readMessagesArray(reader);
+            JsonReader jsonReader = new JsonReader(new StringReader(in));
+            try {
+                return readMessagesArray(jsonReader);
+            }finally{
+                try{
+                    jsonReader.close();
+                }catch(Exception e){
+
+                }
             }
-        }
+        } //done
+
         @SuppressWarnings("unchecked")
         public Recipe readMessagesArray(JsonReader reader) throws IOException {
-            Recipe recipe;
+            Recipe recipe = new Recipe();
 
-            reader.beginArray();
-            recipe = readRecipe(reader);
-            reader.endArray();
+            recipe = getRecipe(reader);
             return recipe;
-        }
+        } //done
 
-        public Recipe readRecipe(JsonReader reader) throws IOException{
+        public Recipe getRecipe(JsonReader reader) throws IOException{
 
-            String recipeName;
-            String sourceURL;
-            String ingredients;
+            String recipeName = "";
+            String description = "";
+            String instructions = "";
+            String videoURL = "";
+            String foodID = "";
+            boolean dietFood = false;
+            boolean hasCaffeine = false;
+            boolean glutenFree = false;
+            int calories = 0;
+            List<String> ingredientList = new ArrayList<>();
 
-            List<String> ingredientList;
-
-            ingredientList = new ArrayList<>();
             reader.beginObject();
-            //TODO fill in variables from JSON
-            while (reader.hasNext()){
+            while (reader.hasNext()) {
                 String name = reader.nextName();
-                if (name.equals("yield")){
+                if(name.equals("yield")){
                     reader.skipValue();
-                } else if(name.equals("nutritionEstimates")){
+                }else if(name.equals("nutritionEstimates")){
                     reader.skipValue();
-                } else if(name.equals("totalTime")){
+                }else if(name.equals("prepTimeInSeconds")){
                     reader.skipValue();
-                } else if(name.equals("images")){
+                }else if(name.equals("totalTime")){
                     reader.skipValue();
-                } else if(name.equals("name")){
+                }else if(name.equals("images")){
+                    reader.skipValue();
+                }else if(name.equals("name")){
                     recipeName = reader.nextString();
-                } else if(name.equals("source")){
+                }else if(name.equals("source")){
+                    reader.beginObject();
                     if(name.equals("sourceDisplayName")){
                         reader.skipValue();
-                    } else if(name.equals("SourceSiteUrl")){
+                    }else if(name.equals("sourceSiteUrl")){
                         reader.skipValue();
-                    } else if(name.equals("sourceRecipeUrl")) {
-                        sourceURL = reader.nextString();
-                    } else {
-                        reader.skipValue();
+                    }else if(name.equals("sourceRecipeUrl")){
+                        instructions = reader.nextString();
                     }
-                } else if(name.equals("id")){
+                    reader.endObject();
+                }else if(name.equals("prepTime")){
                     reader.skipValue();
-                } else if(name.equals("ingredientLines") && reader.peek() != JsonToken.NULL){
-                    reader.beginArray();
-                    while(reader.hasNext()) {
-                        ingredientList.add(reader.nextString());
-                    }
-                    reader.endArray();
-                } else if(name.equals("attribution")){
+                }else if(name.equals("id")){
+                    foodID = reader.nextString();
+                }else if(name.equals("ingredientLines")){
+                    ingredientList = getIngredientList(reader);
+                }else if(name.equals("cookTime")){
                     reader.skipValue();
-                } else if(name.equals("numberOfServings")){
+                }else if(name.equals("attribution")){
                     reader.skipValue();
-                } else if(name.equals("totalTimeInSeconds")){
+                }else if(name.equals("numberOfServings")){
                     reader.skipValue();
-                } else if(name.equals("attributes")){
+                }else if(name.equals("totalTimeInSeconds")){
                     reader.skipValue();
-                } else if(name.equals("flavors")){
+                }else if(name.equals("attributes")){
                     reader.skipValue();
-                } else if(name.equals("rating")){
+                }else if(name.equals("cookTimeInSeconds")){
                     reader.skipValue();
-                } else {
+                }else if(name.equals("flavors")){
+                    reader.skipValue();
+                }else if(name.equals("rating")){
                     reader.skipValue();
                 }
             }
             reader.endObject();
-            return new Recipe();
-        }
-    }
+            return new Recipe(recipeName, description, instructions, videoURL, dietFood, hasCaffeine,
+                    glutenFree, calories, ingredientList, SQLiteTablesContract.NamesOfAPIs.YUMMLY,foodID);
+        } //done
+        public List<String> getIngredientList(JsonReader reader) throws IOException{
+            List<String> ingredientList = new ArrayList<>();
+            reader.beginArray();
+            while (reader.hasNext()){
+                ingredientList.add(reader.nextString());
+            }
+            reader.endArray();
+            return ingredientList;
+        } //done
+    } //done
+
+
 }
