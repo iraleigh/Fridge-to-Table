@@ -21,7 +21,7 @@ public class Cookbook extends AppCompatActivity {
         ArrayAdapter<Recipe> adapt = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1, savedRecipes);
         ListView list = (ListView) findViewById(R.id.listView2);
         list.setAdapter(adapt);
-        Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0, new ArrayList<String>());
+        Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0, new ArrayList<String>(),"api", "apiId");
 
         for (int i = 0; i < numSavedRecipes; i++) {
             savedRecipes.add(i, sample);
