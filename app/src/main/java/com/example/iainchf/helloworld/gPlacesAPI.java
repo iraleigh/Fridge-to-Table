@@ -23,7 +23,7 @@ public class gPlacesAPI {
     private String apiKey;
 
     public gPlacesAPI(double lng, double lat){
-        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + lng + "&radius=500&types=grocery_or_supermarket&key=AIzaSyB8ESdZiFJ0vjiYi1T6YE4bTm16Vsov610";
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + ", "+ lng + "&radius=500&types=grocery_or_supermarket&key=AIzaSyB8ESdZiFJ0vjiYi1T6YE4bTm16Vsov610";
 
         HttpGetData gPlacesGetter = new HttpGetData(url);
         while(gPlacesGetter.getData() == null);

@@ -5,13 +5,25 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.Certificate;
+import java.security.KeyStore;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
 
 
 /**
@@ -48,19 +60,36 @@ public class HttpGetData {
 
         try {
             URL url = new URL(myurl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            // Starts the query
-            conn.connect();
-            int response = conn.getResponseCode();
-            Log.d(DEBUG_TAG, "The response is: " + response);
-            is = new BufferedInputStream(conn.getInputStream());
-            // Convert the InputStream into a string
-            data = readIt(is,12000);
-            is.close();
+            String https = myurl.substring(0,5);
+            if(https.equals("https")){
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d(DEBUG_TAG, "The response is: " + response);
+                is = new BufferedInputStream(conn.getInputStream());
+                // Convert the InputStream into a string
+                data = readIt(is,12000);
+                is.close();
+            } else {
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d(DEBUG_TAG, "The response is: " + response);
+                is = new BufferedInputStream(conn.getInputStream());
+                // Convert the InputStream into a string
+                data = readIt(is,12000);
+                is.close();
+            }
             return "Data filled";
 
             // Makes sure that the InputStream is closed after the app is

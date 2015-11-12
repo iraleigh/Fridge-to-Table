@@ -20,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
 import java.util.Map;
 
 public class Google_Store_Find extends AppCompatActivity implements OnMapReadyCallback {
@@ -69,7 +70,17 @@ public class Google_Store_Find extends AppCompatActivity implements OnMapReadyCa
             map.animateCamera(CameraUpdateFactory.zoomTo(14));
             String snippetLatLong = latitude + ", " + longitude;
             map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet(snippetLatLong));
-
+            /*
+            gPlacesAPI gPlace = new gPlacesAPI(longitude, latitude);
+            List<Places> placesList = gPlace.getList();
+            for(Places p : placesList){
+                double lat = p.getLat();
+                double lng = p.getLng();
+                String name = p.getName();
+                String address = p.getAddress();
+                map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(name).snippet(address));
+            }
+            */
         } catch(Exception e){
             Toast.makeText(this,"Location Services Not Allowed, change permission",Toast.LENGTH_SHORT);
         }
