@@ -32,7 +32,7 @@ public class Get_Recipes extends AppCompatActivity {
 
     public void goToRecipe(View v)
     {
-        startActivity(new Intent(Get_Recipes.this, Home.class));
+        startActivity(new Intent(Get_Recipes.this, RecipePage.class));
     }
 
 }
