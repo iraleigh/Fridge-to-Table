@@ -1,5 +1,7 @@
 package com.example.iainchf.helloworld;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,8 +16,8 @@ import java.util.List;
 
 public class Refrigerator extends AppCompatActivity {
 
-    //TODO: Are ingredients just a list of Strings? Do we need Ingredient object? If so, what other fields will ingredient contain?
-    private List<String> myIngredients = new ArrayList<String>();
+    private List<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,28 +25,33 @@ public class Refrigerator extends AppCompatActivity {
         setContentView(R.layout.activity_refrigerator);
         setTitle("My Refrigerator");
 
-        //TODO: This needs to be populated from the database, rather than hardcoded
-        myIngredients.add("Carrot");
-        myIngredients.add("Milk");
-        myIngredients.add("Rice");
-        myIngredients.add("Peanut Butter");
-        myIngredients.add("Canned Tuna");
-        myIngredients.add("Bread");
-        myIngredients.add("Eggs");
-        myIngredients.add("Bottled water");
+        this.context = getApplicationContext();
+
+        ingredientsList = SQLiteAPISingletonHandler.getInstance(context).getIngredients();
+
+        checkIfRefrigeratorIsEmpty();
 
         populateRefrigeratorTable();
     }
 
+    private void checkIfRefrigeratorIsEmpty() {
+        TextView textview = (TextView) findViewById(R.id.fridgeIsEmptyLabel);
+        if(ingredientsList.size() == 0) {
+            textview.setVisibility(View.VISIBLE);
+        } else {
+            textview.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void populateRefrigeratorTable() {
-        ArrayAdapter<String> adapter = new MyListAdapter();
+        ArrayAdapter<Ingredient> adapter = new MyListAdapter();
         ListView list = (ListView) findViewById(R.id.listView);
         list.setAdapter(adapter);
     }
 
-    private class MyListAdapter extends ArrayAdapter<String> {
+    private class MyListAdapter extends ArrayAdapter<Ingredient> {
         public MyListAdapter() {
-            super(Refrigerator.this, R.layout.row_refrigerator, myIngredients);
+            super(Refrigerator.this, R.layout.row_refrigerator, ingredientsList);
         }
 
         @Override
@@ -53,18 +60,27 @@ public class Refrigerator extends AppCompatActivity {
             if(itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.row_refrigerator, parent, false);
             }
-            String ingredient = myIngredients.get(position);
+            Ingredient ingredient = ingredientsList.get(position);
             TextView textView = (TextView)itemView.findViewById(R.id.ingredientName);
-            textView.setText(ingredient);
+            textView.setText(ingredient.getName());
             ImageButton delete = (ImageButton)itemView.findViewById(R.id.deleteButton);
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myIngredients.remove(position);
+                    long id = ingredientsList.get(position).getId();
+                    SQLiteAPISingletonHandler.getInstance(context).removeIngredient(id);
+                    ingredientsList.remove(position);
+                    checkIfRefrigeratorIsEmpty();
                     populateRefrigeratorTable();
                 }
             });
             return itemView;
         }
     }
+
+    public void goToAddIngredient(View v) {
+        Intent in = new Intent(this, AddIngredient.class);
+        startActivity(in);
+    }
+
 }

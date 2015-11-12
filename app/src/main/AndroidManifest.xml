@@ -59,6 +59,8 @@
         </activity>
         <activity android:name=".Amazon_Ordering" >
         </activity>
+        <activity android:name=".AddIngredient" >
+        </activity>
         <activity
             android:name=".CookBookDummyActivity"
             android:label="@string/title_activity_cook_book_dummy" >
