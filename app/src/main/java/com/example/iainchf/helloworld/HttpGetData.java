@@ -14,12 +14,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-<<<<<<< HEAD
+
 import java.security.KeyStore;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-=======
+
 import java.security.cert.Certificate;
 import java.security.KeyStore;
 import java.security.cert.CertificateFactory;
@@ -29,7 +29,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
->>>>>>> issue#15
+
 import javax.net.ssl.TrustManagerFactory;
 
 
