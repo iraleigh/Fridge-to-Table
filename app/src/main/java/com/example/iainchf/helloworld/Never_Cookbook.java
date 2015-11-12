@@ -34,4 +34,9 @@ public class Never_Cookbook extends AppCompatActivity {
         Intent in = new Intent(this,Home.class);
         startActivity(in);
     }
+
+    public void goToGetRecipes(View v){
+        Intent in = new Intent(this,Get_Recipes.class);
+        startActivity(in);
+    }
 }
