@@ -126,4 +126,79 @@ public class SQLiteAPISingletonHandler {
     }
 
 
+    public List<Recipe> getCookbook(){
+        List<Recipe> favoriteRecipes = new ArrayList<>();
+
+        db = sqLitehelper.getReadableDatabase();
+        String [] columnsToReadFrom = {
+                SQLiteTablesContract.CookBookOfFavoriteRecipes._ID,
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_NAME,
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_ID
+        };
+        class Columns {
+            public static final int ID = 0;
+            public static final int API_NAME = 1;
+            public static final int API_ID = 2;
+        }
+
+        String sortOrder = SQLiteTablesContract.CookBookOfFavoriteRecipes._ID + " ASC";
+
+        Cursor c = db.query(
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.TABLE_NAME, // The table to query
+                columnsToReadFrom, // The columns to return
+                null,              // The columns for the WHERE clause
+                null,              // The values for the WHERE clause
+                null,              // don't group the rows
+                null,              // don't filter by row groups
+                sortOrder
+        );
+
+        if (c.moveToFirst()) {
+            do {
+                long id = c.getInt(Columns.ID);
+                String apiName = c.getString(Columns.API_NAME);
+                String apiId = c.getString(Columns.API_ID);
+                if(apiName.equals(SQLiteTablesContract.NamesOfAPIs.FOOD2FORK)){
+                    Food2ForkAPI api = new Food2ForkAPI();
+                    HttpGetData getDataAboutRecipe = new HttpGetData(api.createGetURL(apiId));
+                    while(getDataAboutRecipe.getData() == null);
+
+                    Recipe currentRecipe = api.parseJsonForRecipes(getDataAboutRecipe.getData(), apiId);
+
+                    favoriteRecipes.add(currentRecipe);
+                } else if (apiName.equals(SQLiteTablesContract.NamesOfAPIs.YUMMLY)){
+
+                }
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return favoriteRecipes;
+    }
+
+    public void addRecipeToCookbook(Recipe recipe) {
+        // Gets the data repository in write mode
+        db = sqLitehelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_NAME,
+                recipe.getNameOfAPI());
+        values.put(SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_ID,
+                recipe.getIdFromAPI());
+
+
+        db.insert(SQLiteTablesContract.CookBookOfFavoriteRecipes.TABLE_NAME,"null",values);
+    }
+
+    public void removeRecipeFromCookbook(Recipe recipe){
+        db = sqLitehelper.getWritableDatabase();
+        db.delete(
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.TABLE_NAME,
+                SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_ID + " LIKE ?",
+                new String[]{recipe.getIdFromAPI()}
+        );
+    }
+
 }

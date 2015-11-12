@@ -86,7 +86,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                 HttpGetData food2ForkRecipeGetter = new HttpGetData(createGetURL(ids.get(i)));
                 while(food2ForkRecipeGetter.getData() == null);
                 String json = food2ForkRecipeGetter.getData();
-                recipeList.add(parseJsonForRecipes(json));
+                recipeList.add(parseJsonForRecipes(json, ids.get(i)));
             }
             int oldPlaceInList = placeInIdList;
             placeInIdList += 5;
@@ -95,6 +95,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
             return new ArrayList<>();
         }
     }
+
 
     private List<String> parseJsonForID(String json){
         Food2ForkIdJsonReader idReader = new Food2ForkIdJsonReader();
@@ -107,12 +108,12 @@ public class Food2ForkAPI extends RecipesProviderAPI {
             return ids;
         }
     }
-    private Recipe parseJsonForRecipes(String json){
+    public Recipe parseJsonForRecipes(String json, String id){
         Food2ForkRecipeJsonReader recipeReader = new Food2ForkRecipeJsonReader();
         Recipe recipe = new Recipe();
         try {
 
-            recipe = recipeReader.readJsonStream(json);
+            recipe = recipeReader.readJsonStream(json, id);
         } catch (IOException e){
             return recipe;
         } finally {
@@ -120,7 +121,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
         }
     }
 
-    private String createSearchURL() {
+    public String createSearchURL() {
         String tempUrl = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
         for(String i: ingredients){
             tempUrl += i + "%20";
@@ -128,9 +129,10 @@ public class Food2ForkAPI extends RecipesProviderAPI {
         return tempUrl;
     }
 
-    private String createGetURL(String id) {
+    public String createGetURL(String id) {
         return "http://food2fork.com/api/get?key=dbbbfeea06ecad86b07d2e521cf9e95f&rId=" + id;
     }
+
 
     private class Food2ForkIdJsonReader {
 
@@ -204,10 +206,10 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
     private class Food2ForkRecipeJsonReader {
         @TargetApi(Build.VERSION_CODES.KITKAT)
-        public Recipe readJsonStream(String in) throws IOException{
+        public Recipe readJsonStream(String in, String id) throws IOException{
             com.google.gson.stream.JsonReader jsonReader = new com.google.gson.stream.JsonReader(new StringReader(in));
             try{
-                return readMessagesArray(jsonReader);
+                return readMessagesArray(jsonReader, id);
             }finally{
                 try {
                     jsonReader.close();
@@ -217,7 +219,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
 
 
         @SuppressWarnings("unchecked")
-        public Recipe readMessagesArray(com.google.gson.stream.JsonReader reader) throws IOException {
+        public Recipe readMessagesArray(com.google.gson.stream.JsonReader reader, String id) throws IOException {
             Recipe recipe = new Recipe();
 
             reader.beginObject();
@@ -225,7 +227,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                 String name = reader.nextName();
                 if (name.equals("recipe")){
                     try {
-                        recipe = getRecipe(reader);
+                        recipe = getRecipe(reader, id);
                     } catch (Exception e){
                         return recipe;
                     }
@@ -235,7 +237,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
             return recipe;
         }
 
-        private Recipe getRecipe(com.google.gson.stream.JsonReader reader) throws IOException{
+        private Recipe getRecipe(com.google.gson.stream.JsonReader reader, String id) throws IOException{
             String recipeName = "";
             String description = "";
             String instructions = "";
@@ -275,7 +277,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
 
             reader.endObject();
             return new Recipe(recipeName, description, instructions, videoURL, dietFood, hasCaffeine,
-            glutenFree, calories, ingredientList);
+            glutenFree, calories, ingredientList, SQLiteTablesContract.NamesOfAPIs.FOOD2FORK, id);
         }
         private List<String> getIngredientList(com.google.gson.stream.JsonReader reader) throws IOException{
             List<String> ingredientList = new ArrayList<>();

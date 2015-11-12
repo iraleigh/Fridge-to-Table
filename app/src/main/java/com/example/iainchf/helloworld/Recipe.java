@@ -15,14 +15,16 @@ public class Recipe {
     private boolean hasCaffeine;
     private boolean glutenFree;
     private int calories;
+    private String nameOfAPI;
     private List<String> ingredientList;
+    private String idFromAPI;
 
     //Sets all strings to null, boolean to false, and int to 0.
     public Recipe(){
     }
 
     public Recipe(String n, String d, String inst, String vURL, boolean diet, boolean caffe,
-                  boolean gluten, int cal, List<String> iList){
+                  boolean gluten, int cal, List<String> iList, String api, String id){
         name = n;
         description = d;
         instructions = inst;
@@ -32,6 +34,8 @@ public class Recipe {
         glutenFree = gluten;
         calories = cal;
         ingredientList = iList;
+        nameOfAPI = api;
+        idFromAPI = id;
     }
 
     public String getName(){
@@ -85,4 +89,6 @@ public class Recipe {
         }
         return listOfIngredients;
     }
+    public String getNameOfAPI() {return nameOfAPI;}
+    public String getIdFromAPI() {return idFromAPI;}
 }
