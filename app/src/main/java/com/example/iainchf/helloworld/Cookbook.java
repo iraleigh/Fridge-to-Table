@@ -23,7 +23,7 @@ public class Cookbook extends AppCompatActivity {
         list.setAdapter(adapt);
         SQLiteAPISingletonHandler insta = SQLiteAPISingletonHandler.getInstance(this);
         //savedRecipes.addAll(insta.getCookbook());
-        Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0, new ArrayList<String>(),"api", "apiId");
+        Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0,new ArrayList<String>(),"","api", "apiId");
 
         for (int i = 0; i < numSavedRecipes; i++) {
             savedRecipes.add(i, sample);
