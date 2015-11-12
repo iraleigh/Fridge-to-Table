@@ -7,4 +7,15 @@
     <string name="title_activity_cook_book_dummy">CookBookDummyActivity</string>
     <string name="title_activity_home_dummy">HomeDummyActivity</string>
     <string name="title_activity_fridge_dummy">FridgeDummyActivity</string>
+
+    <string-array name="FILTER">
+        <item>None</item>
+        <item>Entre</item>
+        <item>Beverage</item>
+        <item>Desert</item>
+        <item>Vegan</item>
+        <item>Vegetarian</item>
+        <item>Kosher</item>
+    </string-array>
+
 </resources>
