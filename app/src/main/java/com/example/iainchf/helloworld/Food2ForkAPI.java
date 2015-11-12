@@ -248,6 +248,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
             boolean glutenFree = false;
             int calories = 0;
             List<String> ingredientList = new ArrayList<>();
+            String imageURL = "";
 
 
 
@@ -268,7 +269,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                 } else if(name.equals("recipe_id")) {
                     reader.skipValue();
                 } else if(name.equals("image_url")) {
-                    reader.skipValue();
+                    imageURL= reader.nextString();
                 } else if(name.equals("social_rank")) {
                     reader.skipValue();
                 } else if(name.equals("publisher_url")) {
@@ -278,7 +279,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
 
             reader.endObject();
             return new Recipe(recipeName, description, instructions, videoURL, dietFood, hasCaffeine,
-            glutenFree, calories, ingredientList, SQLiteTablesContract.NamesOfAPIs.FOOD2FORK, id);
+            glutenFree, calories, ingredientList, imageURL,SQLiteTablesContract.NamesOfAPIs.FOOD2FORK, id);
         }
         private List<String> getIngredientList(com.google.gson.stream.JsonReader reader) throws IOException{
             List<String> ingredientList = new ArrayList<>();

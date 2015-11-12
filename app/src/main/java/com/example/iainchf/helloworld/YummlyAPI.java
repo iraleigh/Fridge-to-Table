@@ -257,7 +257,7 @@ public class YummlyAPI {
             }
             reader.endObject();
             return new Recipe(recipeName, description, instructions, videoURL, dietFood, hasCaffeine,
-                    glutenFree, calories, ingredientList, SQLiteTablesContract.NamesOfAPIs.YUMMLY,foodID);
+                    glutenFree, calories, ingredientList,"",SQLiteTablesContract.NamesOfAPIs.YUMMLY,foodID);
         } //done
         public List<String> getIngredientList(JsonReader reader) throws IOException{
             List<String> ingredientList = new ArrayList<>();
