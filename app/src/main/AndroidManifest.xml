@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".Get_Recipes" >
         </activity>
-        <activity android:name=".Recipe_Page" >
+        <activity android:name=".RecipePage">
         </activity>
         <activity android:name=".Cookbook" >
         </activity>
@@ -71,11 +71,6 @@
             android:name=".FridgeDummyActivity"
             android:label="@string/title_activity_fridge_dummy" >
         </activity>
-        <activity
-            android:name=".TestingDBIntegration"
-            android:label="@string/title_activity_testing_dbintegration" >
-        </activity>
-
     </application>
 
 </manifest>
