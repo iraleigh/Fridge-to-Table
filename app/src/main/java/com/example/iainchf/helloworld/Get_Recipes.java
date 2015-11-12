@@ -7,12 +7,21 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.util.List;
+
 public class Get_Recipes extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get__recipes);
+
+        SQLiteAPISingletonHandler ingredientListSQL = SQLiteAPISingletonHandler.getInstance(this);
+
+        List<Ingredient> ingredients = ingredientListSQL.getIngredients();
+
+        List<Recipe> recipes = ingredientListSQL.getCookbook();
+
 
         Spinner spinner;
         spinner = (Spinner) findViewById(R.id.spinner);

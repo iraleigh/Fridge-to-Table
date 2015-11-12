@@ -37,7 +37,7 @@ public class SQLiteAPIHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + SQLiteTablesContract.CookBookOfFavoriteRecipes.TABLE_NAME + " (" +
                     SQLiteTablesContract.CookBookOfFavoriteRecipes._ID +
                     " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    SQLiteTablesContract.FridgeOfIngredientsEntry.COLUMN_NAME_INGREDIENT_NAME +
+                    SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_NAME +
                     TEXT_TYPE + COMMA_SEP +
                     SQLiteTablesContract.CookBookOfFavoriteRecipes.COLUMN_NAME_API_SOURCE_ID +
                     TEXT_TYPE +
