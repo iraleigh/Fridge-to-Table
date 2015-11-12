@@ -36,13 +36,11 @@ public class Cookbook extends AppCompatActivity {
         }*/
 
     public void goToGetRecipes(View v){
-        //Log.d("In startA","Starting Recipe Activity" );
         Intent in = new Intent(this,Get_Recipes.class);
         startActivity(in);
     }
 
     public void goToHome(View v){
-        //Log.d("In startA","Starting Recipe Activity" );
         Intent in = new Intent(this,Home.class);
         startActivity(in);
     }

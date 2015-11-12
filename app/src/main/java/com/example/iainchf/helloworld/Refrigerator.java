@@ -83,4 +83,9 @@ public class Refrigerator extends AppCompatActivity {
         startActivity(in);
     }
 
+    public void goToHome(View v){
+        Intent in = new Intent(this,Home.class);
+        startActivity(in);
+    }
+
 }
