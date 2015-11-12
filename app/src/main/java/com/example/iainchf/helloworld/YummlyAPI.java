@@ -84,7 +84,9 @@ public class YummlyAPI {
         return tempURL;
     } //done
 
+
     private class YummlyIdJsonReader {
+
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
         public List<String> readJsonStream(String in) throws IOException {
@@ -162,7 +164,9 @@ public class YummlyAPI {
             return new String(tempId);
         }
 
+
     } //done
+
 
     //TODO customize to read Recipe from Yummly
     private class YummlyRecipeJsonReader {
