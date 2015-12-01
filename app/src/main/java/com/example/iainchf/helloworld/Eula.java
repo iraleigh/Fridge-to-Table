@@ -45,7 +45,7 @@ public class Eula extends Activity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(context, Home.class);
+                                Intent intent = new Intent(context, Refrigerator.class);
                                 activity.startActivity(intent);
                                 activity.finish();
                             }

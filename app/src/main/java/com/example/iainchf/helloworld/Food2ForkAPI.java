@@ -122,7 +122,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createSearchURL() {
-        String tempUrl = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
+        String tempUrl = "http://food2fork.com/api/search?key=29fb1cf6ce48d1a96714bf6a84dfabfc&q=";
         for(String i: ingredients){
             tempUrl += i + "%20";
         }
@@ -130,7 +130,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createGetURL(String id) {
-        return "http://food2fork.com/api/get?key=dbbbfeea06ecad86b07d2e521cf9e95f&rId=" + id;
+        return "http://food2fork.com/api/get?key=29fb1cf6ce48d1a96714bf6a84dfabfc&rId=" + id;
     }
 
 

@@ -3,6 +3,8 @@ package com.example.iainchf.helloworld;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -22,12 +24,12 @@ public class Cookbook extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.listView2);
         list.setAdapter(adapt);
         SQLiteAPISingletonHandler insta = SQLiteAPISingletonHandler.getInstance(this);
-        //savedRecipes.addAll(insta.getCookbook());
-        Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0,new ArrayList<String>(),"","api", "apiId");
+        savedRecipes.addAll(insta.getCookbook());
+        //Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0,new ArrayList<String>(),"","api", "apiId");
 
-        for (int i = 0; i < numSavedRecipes; i++) {
-            savedRecipes.add(i, sample);
-        }
+        //for (int i = 0; i < numSavedRecipes; i++) {
+          //  savedRecipes.add(i, sample);
+        //}
     }
 
         /*public void delete (View view) {
@@ -43,5 +45,40 @@ public class Cookbook extends AppCompatActivity {
     public void goToHome(View v){
         Intent in = new Intent(this,Home.class);
         startActivity(in);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch(id){
+            case R.id.get_recipes:
+                startActivity(new Intent(Cookbook.this, RecipePage.class));
+                break;
+            case R.id.filter_recipes:
+                startActivity(new Intent(Cookbook.this, Get_Recipes.class));
+                break;
+            case R.id.fridge:
+                startActivity(new Intent(Cookbook.this, Refrigerator.class));
+                break;
+            case R.id.find_ingredients:
+                startActivity(new Intent(Cookbook.this, Find_Ingredients.class));
+                break;
+            case R.id.cookbook:
+                startActivity(new Intent(Cookbook.this, Cookbook.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

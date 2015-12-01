@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -83,9 +85,40 @@ public class Refrigerator extends AppCompatActivity {
         startActivity(in);
     }
 
-    public void goToHome(View v){
-        Intent in = new Intent(this,Home.class);
-        startActivity(in);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch(id){
+            case R.id.get_recipes:
+                startActivity(new Intent(Refrigerator.this, RecipePage.class));
+                break;
+            case R.id.filter_recipes:
+                startActivity(new Intent(Refrigerator.this, Get_Recipes.class));
+                break;
+            case R.id.fridge:
+                startActivity(new Intent(Refrigerator.this, Refrigerator.class));
+                break;
+            case R.id.find_ingredients:
+                startActivity(new Intent(Refrigerator.this, Find_Ingredients.class));
+                break;
+            case R.id.cookbook:
+                startActivity(new Intent(Refrigerator.this, Cookbook.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
