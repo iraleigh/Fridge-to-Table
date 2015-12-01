@@ -22,7 +22,7 @@ import java.util.List;
 
 
 public class RecipePage extends AppCompatActivity
-{
+{   Recipe currentRecipe;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -67,6 +67,8 @@ public class RecipePage extends AppCompatActivity
         // Set the ArrayAdapter as the ListView's adapter.
         mainListView.setAdapter(listAdapter);
 
+        currentRecipe = sampleRecipe;
+
         new GetImageFromURL().execute(sampleRecipe.getImageUrl());
 
 
@@ -76,7 +78,7 @@ public class RecipePage extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_recipe_page, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -88,10 +90,23 @@ public class RecipePage extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.get_recipes:
+                startActivity(new Intent(RecipePage.this, RecipePage.class));
+                break;
+            case R.id.filter_recipes:
+                startActivity(new Intent(RecipePage.this, Get_Recipes.class));
+                break;
+            case R.id.fridge:
+                startActivity(new Intent(RecipePage.this, Refrigerator.class));
+                break;
+            case R.id.find_ingredients:
+                startActivity(new Intent(RecipePage.this, Find_Ingredients.class));
+                break;
+            case R.id.cookbook:
+                startActivity(new Intent(RecipePage.this, Cookbook.class));
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -102,7 +117,7 @@ public class RecipePage extends AppCompatActivity
 
     public void openCookBookPage(View v)
     {
-        startActivity(new Intent(RecipePage.this, Cookbook.class));
+
     }
 
     public void openFridgePage(View v) {
@@ -110,8 +125,11 @@ public class RecipePage extends AppCompatActivity
     }
     public void toastMessage(View v)
     {
-        Toast.makeText(getApplicationContext(), "No data base to save to yet ... ",
+        Toast.makeText(getApplicationContext(), "Saved to Cookbook",
                 Toast.LENGTH_LONG).show();
+        SQLiteAPISingletonHandler instanceToAddRecipeToCookbook =
+                SQLiteAPISingletonHandler.getInstance(this);
+        instanceToAddRecipeToCookbook.addRecipeToCookbook(currentRecipe);
     }
 
     public static Drawable LoadImageFromWebOperations(String url) {

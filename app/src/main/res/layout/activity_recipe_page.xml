@@ -61,7 +61,7 @@
         android:layout_below="@+id/imageView" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:id="@+id/imageView"
         android:src="@drawable/pizza"

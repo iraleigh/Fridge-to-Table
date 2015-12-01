@@ -37,14 +37,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save &amp; Exit"
-        android:id="@+id/button13"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_centerHorizontal="true"
-        android:onClick="goToHome"
-        />
 
 </RelativeLayout>
