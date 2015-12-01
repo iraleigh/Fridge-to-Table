@@ -69,7 +69,7 @@ public class AddIngredient extends AppCompatActivity {
     public void searchItem(String textToSearch) {
         listItems.clear();
         for(Ingredient item:items) {
-            if(item.getName().contains(textToSearch)) {
+            if(item.getName().toLowerCase().contains(textToSearch.toLowerCase())) {
                 listItems.add(item);
             }
         }
