@@ -34,6 +34,7 @@ public class RecipePage extends AppCompatActivity
     public void onStart(){
         super.onStart();
         // Find the ListView resource.
+
         ListView mainListView = (ListView) findViewById(R.id.mainListView);
 
         SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
