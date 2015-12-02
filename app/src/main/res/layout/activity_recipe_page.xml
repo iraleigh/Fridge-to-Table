@@ -7,68 +7,14 @@
     tools:context="com.example.iainchf.helloworld.RecipePage"
     android:id="@+id/RecipePage">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:id="@+id/HomeButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="openHomePage"/>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/SaveButton"
-        android:layout_alignTop="@+id/HomeButton"
-        android:layout_toRightOf="@+id/HomeButton"
-        android:layout_toEndOf="@+id/HomeButton"
-        android:onClick="toastMessage"/>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fridge"
-        android:id="@+id/FridgeButton"
-        android:layout_alignTop="@+id/CookBookButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="openFridgePage"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cook Book"
-        android:id="@+id/CookBookButton"
-        android:layout_alignTop="@+id/SaveButton"
-        android:layout_toLeftOf="@+id/FridgeButton"
-        android:layout_toRightOf="@+id/SaveButton"
-        android:layout_toEndOf="@+id/SaveButton"
-        android:onClick="openCookBookPage"/>
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mainListView"
-        android:layout_above="@+id/HomeButton"
-        android:layout_alignRight="@+id/FridgeButton"
-        android:layout_alignEnd="@+id/FridgeButton"
-        android:layout_below="@+id/imageView" />
-
-    <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/pizza"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="wrap_content"
+        android:id="@+id/mainListView">
+    </ListView>
+
 
 </RelativeLayout>
