@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,11 +38,17 @@ public class Refrigerator extends AppCompatActivity {
     }
 
     private void checkIfRefrigeratorIsEmpty() {
-        TextView textview = (TextView) findViewById(R.id.fridgeIsEmptyLabel);
+        TextView fridgeIsEmptyLabel = (TextView) findViewById(R.id.fridgeIsEmptyLabel);
+        TextView addIngredientsLabel = (TextView) findViewById(R.id.addIngredientsLabel);
+        ImageView addIngredientsArrow = (ImageView) findViewById(R.id.addIngredientsArrow);
         if(ingredientsList.size() == 0) {
-            textview.setVisibility(View.VISIBLE);
+            fridgeIsEmptyLabel.setVisibility(View.VISIBLE);
+            addIngredientsLabel.setVisibility(View.VISIBLE);
+            addIngredientsArrow.setVisibility(View.VISIBLE);
         } else {
-            textview.setVisibility(View.INVISIBLE);
+            fridgeIsEmptyLabel.setVisibility(View.INVISIBLE);
+            addIngredientsLabel.setVisibility(View.INVISIBLE);
+            addIngredientsArrow.setVisibility(View.INVISIBLE);
         }
     }
 
