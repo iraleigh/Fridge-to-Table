@@ -7,9 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,24 +21,31 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
-public class RecipePage extends AppCompatActivity
-{   Recipe currentRecipe;
+public class RecipePage extends AppCompatActivity {
+    /*
+    Recipe mCurrentRecipe;
+    ArrayList<ImageView> mCurrentImageToLoad;
+    int mCurrentImageIterator = 0;
+    */
+    List<Recipe> mRecipes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_page);
-
+        mRecipes = new ArrayList<>();
 
     }
     public void onStart(){
         super.onStart();
-        // Find the ListView resource.
-        ListView mainListView = (ListView) findViewById(R.id.mainListView);
 
+
+        //Get ingredients from the database
         SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
                 = SQLiteAPISingletonHandler.getInstance(this);
 
@@ -48,32 +58,40 @@ public class RecipePage extends AppCompatActivity
             ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
         }
 
+        //Get recipes from the api
         Food2ForkAPI apiToHandleRequest = new Food2ForkAPI(ingredientsToGiveToAPIRequest);
 
         List<Recipe> listOfFiveSampleRecipes = apiToHandleRequest.getFiveRecipes();
-        Recipe sampleRecipe = listOfFiveSampleRecipes.get(0);
+        mRecipes.addAll(listOfFiveSampleRecipes);
+
+        //Get the names of the recipes for the list adapter
+        final String [] recipeNames = new String[listOfFiveSampleRecipes.size()];
+        String [] recipeImageURL = new String[listOfFiveSampleRecipes.size()];
+        for(int i = 0; i < listOfFiveSampleRecipes.size(); i++){
+            recipeNames[i] = listOfFiveSampleRecipes.get(i).getName();
+            recipeImageURL[i] = listOfFiveSampleRecipes.get(i).getImageUrl();
+        }
 
 
-        ArrayList<String> nutritionList = new ArrayList<>();
-        nutritionList.add(sampleRecipe.getName());
-        nutritionList.addAll(sampleRecipe.getIngredientList());
+        //Create a list to display recipe names and images
+        ListView recipeList = (ListView) findViewById(R.id.mainListView);
 
+        //Create an adapter from the names and image URLs
+        RecipeList adapter = new RecipeList(RecipePage.this, recipeNames,recipeImageURL);
 
+        //Populate the list with Recipes from the adapter
+        recipeList.setAdapter(adapter);
+        recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        // Create ArrayAdapter using the nutrition list.
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.simplerow, nutritionList);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(RecipePage.this, recipeNames[+position], Toast.LENGTH_SHORT).show();
+            }
 
-
-        // Set the ArrayAdapter as the ListView's adapter.
-        mainListView.setAdapter(listAdapter);
-
-        currentRecipe = sampleRecipe;
-
-        new GetImageFromURL().execute(sampleRecipe.getImageUrl());
-
-
-
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,27 +128,6 @@ public class RecipePage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void openHomePage(View v)
-    {
-        startActivity(new Intent(RecipePage.this, Home.class));
-    }
-
-    public void openCookBookPage(View v)
-    {
-
-    }
-
-    public void openFridgePage(View v) {
-        startActivity(new Intent(RecipePage.this, Refrigerator.class));
-    }
-    public void toastMessage(View v)
-    {
-        Toast.makeText(getApplicationContext(), "Saved to Cookbook",
-                Toast.LENGTH_LONG).show();
-        SQLiteAPISingletonHandler instanceToAddRecipeToCookbook =
-                SQLiteAPISingletonHandler.getInstance(this);
-        instanceToAddRecipeToCookbook.addRecipeToCookbook(currentRecipe);
-    }
 
     public static Drawable LoadImageFromWebOperations(String url) {
         try {
@@ -158,8 +155,11 @@ public class RecipePage extends AppCompatActivity
             return d;
         }
         protected void onPostExecute(Drawable d){
-            ImageView recipeImage = (ImageView) findViewById(R.id.imageView);
-            recipeImage.setImageDrawable(d);
+            /*
+            Log.e("Downloading Image:", "#"+mCurrentImageIterator);
+            mCurrentImageToLoad.get(mCurrentImageIterator).setImageDrawable(d);
+            mCurrentImageIterator++;
+            */
         }
     }
 }
