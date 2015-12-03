@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,8 +49,9 @@ public class Find_Ingredients extends AppCompatActivity implements GoogleApiClie
     }
 
     public void goToAmazonOrdering(View v){
-        Intent in = new Intent(this, Amazon_Ordering.class);
-        startActivity(in);
+        WebView amazonFresh = new WebView(this);
+        amazonFresh.loadUrl("https://fresh.amazon.com/");
+        setContentView(amazonFresh);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
