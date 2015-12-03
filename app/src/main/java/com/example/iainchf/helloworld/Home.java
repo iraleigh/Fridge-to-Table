@@ -18,7 +18,6 @@ public class Home extends AppCompatActivity {
     }
 
     public void goToGetRecipes(View v){
-        //Log.d("In startA","Starting Recipe Activity" );
         Intent in = new Intent(this,Get_Recipes.class);
         startActivity(in);
     }

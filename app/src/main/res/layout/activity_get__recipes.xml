@@ -53,15 +53,18 @@
         android:layout_toRightOf="@+id/textView4"
         android:layout_toEndOf="@+id/textView4" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done!"
-        android:id="@+id/button6"
+
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/imageButton2"
+        android:background="@layout/circle_button"
+        android:elevation="5dp"
+        android:src="@drawable/next"
         android:layout_marginBottom="69dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="goToRecipe"/>
+        android:onClick="goToRecipe"/>/>
 
 
 </RelativeLayout>
