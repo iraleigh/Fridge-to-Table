@@ -1,7 +1,7 @@
 package com.example.iainchf.helloworld;
 
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by Nwilley91 on 10/1/2015.
@@ -95,4 +95,5 @@ public class Recipe {
     public String getNameOfAPI() {return nameOfAPI;}
     public String getIdFromAPI() {return idFromAPI;}
     public String getImageUrl() {return imageUrl;}
+
 }

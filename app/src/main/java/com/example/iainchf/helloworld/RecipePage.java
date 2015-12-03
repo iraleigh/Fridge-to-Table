@@ -1,27 +1,19 @@
 package com.example.iainchf.helloworld;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -67,7 +59,7 @@ public class RecipePage extends AppCompatActivity {
         //Get the names of the recipes for the list adapter
         final String [] recipeNames = new String[listOfFiveSampleRecipes.size()];
         String [] recipeImageURL = new String[listOfFiveSampleRecipes.size()];
-        for(int i = 0; i < listOfFiveSampleRecipes.size(); i++){
+        for(int i = 0; i < listOfFiveSampleRecipes.size(); i++) {
             recipeNames[i] = listOfFiveSampleRecipes.get(i).getName();
             recipeImageURL[i] = listOfFiveSampleRecipes.get(i).getImageUrl();
         }
@@ -85,13 +77,24 @@ public class RecipePage extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RecipePage.this, recipeNames[+position], Toast.LENGTH_SHORT).show();
+            Intent in = new Intent(RecipePage.this, RecipeDetail.class);
+            in.putExtra("name", mRecipes.get(position).getName());
+            in.putExtra("description", mRecipes.get(position).getDescription());
+            in.putExtra("instructions", mRecipes.get(position).getInstructions());
+            in.putExtra("videoURL", mRecipes.get(position).getVideoURL());
+            in.putExtra("dietFood", mRecipes.get(position).isDiet());
+            in.putExtra("hasCaffeine", mRecipes.get(position).isCaffeinated());
+            in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
+            in.putExtra("calories", mRecipes.get(position).getCalorieCount());
+            in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
+            in.putExtra("ingredientList", mRecipes.get(position).getIngredientList().toString());
+            in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
+            in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());
+            startActivity(in);
             }
 
         });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
