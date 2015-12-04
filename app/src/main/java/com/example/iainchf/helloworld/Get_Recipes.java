@@ -1,17 +1,13 @@
 package com.example.iainchf.helloworld;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -37,12 +33,9 @@ public class Get_Recipes extends AppCompatActivity {
 
         ingredients = ingredientListSQL.getIngredients();
 
-        List<Recipe> recipes = ingredientListSQL.getCookbook();
-
         TableLayout IngredientsTable = (TableLayout)findViewById(R.id.IngredientTable);
 
-//        ingredientsToGiveToAPI = new String[ingredients.size() + 1];
-        ingredientsToGiveToAPI = new String[100];
+        ingredientsToGiveToAPI = new String[ingredients.size() + 1];
 
         //half list size because we want two columns. If we want more than two columns you have to split the list
         //size by the number of columns you have.
@@ -177,13 +170,6 @@ public class Get_Recipes extends AppCompatActivity {
                 IngredientsTable.addView(edgeBox);
             }
         }
-
-
-        Spinner spinner;
-        spinner = (Spinner) findViewById(R.id.spinner);
-
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.FILTER , android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
     }
 
     public void goToRecipe(View v)
