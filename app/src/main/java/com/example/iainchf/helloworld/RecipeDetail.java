@@ -3,15 +3,21 @@ package com.example.iainchf.helloworld;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class RecipeDetail extends AppCompatActivity {
 
     private ImageView iv;
     private Bitmap bitmap;
+    private TextView recipeName;
+    private ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +34,32 @@ public class RecipeDetail extends AppCompatActivity {
         Boolean glutenFree = b.getBoolean("glutenFree");
         int calories = b.getInt("calories");
         String nameOfAPI = b.getString("nameOfAPI");
-        String ingredientList = b.getString("ingredientList");
+        //String ingredientList = b.getString("ingredientList");
+        ArrayList<String> ingredientList = b.getStringArrayList("ingredients");
         String idFromAPI = b.getString("idFromAPI");
         String imageUrl = b.getString("imageUrl");
 
-        TextView textView = (TextView) findViewById(R.id.textView1);
-        textView.setText(imageUrl);
+        recipeName = (TextView) findViewById(R.id.recipeName);
+        recipeName.setText(name);
+
+        Log.d("name", name);
+        Log.d("desc", description);
+        Log.d("inst", instructions);
+        Log.d("vide", videoURL);
+        Log.d("diet", dietFood.toString());
+        Log.d("caff", hasCaffeine.toString());
+        Log.d("glut", glutenFree.toString());
+        Log.d("calo", Integer.toString(calories));
+        Log.d("API", nameOfAPI);
+        Log.d("ingr", ingredientList.toString());
+        Log.d("imag", imageUrl);
+
+        lv = (ListView) findViewById(R.id.listIngredientsView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
+        lv.setAdapter(arrayAdapter);
+        //lv.setLayoutParams(new LinearLayout.LayoutParams(300, 1000));
 
         iv = (ImageView) findViewById(R.id.bcgImage);
-
         try {
             bitmap = new GetBitmapFromURL().execute(imageUrl).get();
             iv.setImageBitmap(bitmap);
