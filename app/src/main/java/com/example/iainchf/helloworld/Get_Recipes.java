@@ -41,7 +41,8 @@ public class Get_Recipes extends AppCompatActivity {
 
         TableLayout IngredientsTable = (TableLayout)findViewById(R.id.IngredientTable);
 
-        ingredientsToGiveToAPI = new String[ingredients.size()];
+//        ingredientsToGiveToAPI = new String[ingredients.size() + 1];
+        ingredientsToGiveToAPI = new String[100];
 
         //half list size because we want two columns. If we want more than two columns you have to split the list
         //size by the number of columns you have.
@@ -63,19 +64,34 @@ public class Get_Recipes extends AppCompatActivity {
 
             box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //What the check box does when it's checked
                     // All checkboxes start unchecked.
-                    if(buttonView.isChecked())
+                    if (buttonView.isChecked())
                     {
                         //what it does when checked
-                        ingredientsToGiveToAPI[i] = ingredients.get(i).getName();
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                break;
+                            }
+                        }
                     }
                     else
                     {
                         //what it does when unchecked
-                        ingredientsToGiveToAPI[i] = "";
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = null;
+                                break;
+                            }
+                        }
                     }
 
                 }
@@ -86,15 +102,31 @@ public class Get_Recipes extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //What the check box2 does when it's checked.
                     // All checkboxes start unchecked.
-                    if(buttonView.isChecked())
+                    if (buttonView.isChecked())
                     {
                         //what it does when checked
-                        ingredientsToGiveToAPI[j] = ingredients.get(j).getName();
+                        String ingredientName = (String)buttonView.getText();
+                        for(int l = 0; l < ingredients.size(); l++)
+                        {
+                            if(ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                break;
+                            }
+                        }
                     }
                     else
                     {
                         //what it does when unchecked
-                        ingredientsToGiveToAPI[j] = "";
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = null;
+                                break;
+                            }
+                        }
                     }
                 }
             });
@@ -113,12 +145,31 @@ public class Get_Recipes extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         //What the check box does when it's checked
                         // All checkboxes start unchecked.
-                        if (buttonView.isChecked()) {
+                        if (buttonView.isChecked())
+                        {
                             //what it does when checked
-                            ingredientsToGiveToAPI[ingredients.size() - 1] = ingredients.get(ingredients.size() - 1).getName();
-                        } else {
+                            String ingredientName = (String)buttonView.getText();
+                            for(int l = 0; l < ingredients.size(); l++)
+                            {
+                                if(ingredients.get(l).getName().equals(ingredientName))
+                                {
+                                    ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
                             //what it does when unchecked
-                            ingredientsToGiveToAPI[ingredients.size() - 1] = "";
+                            String ingredientName = (String) buttonView.getText();
+                            for (int l = 0; l < ingredients.size(); l++)
+                            {
+                                if (ingredients.get(l).getName().equals(ingredientName))
+                                {
+                                    ingredientsToGiveToAPI[l] = null;
+                                    break;
+                                }
+                            }
                         }
                      }
                 });
