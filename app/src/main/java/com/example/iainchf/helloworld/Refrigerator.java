@@ -128,4 +128,9 @@ public class Refrigerator extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void goToGetRecipes(View v){
+        Intent in = new Intent(this,Get_Recipes.class);
+        startActivity(in);
+    }
+
 }
