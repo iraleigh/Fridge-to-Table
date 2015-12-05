@@ -174,7 +174,36 @@ public class Get_Recipes extends AppCompatActivity {
 
     public void goToRecipe(View v)
     {
-        startActivity(new Intent(Get_Recipes.this, RecipePage.class));
+        int nullCount = 0;
+
+        for(int k = 0; k < ingredientsToGiveToAPI.length; k++)
+        {
+            if(ingredientsToGiveToAPI[k] == null)
+            {
+                nullCount++;
+            }
+        }
+
+        String[] ingredientsToGiveToApiCondensed = new String[ingredientsToGiveToAPI.length - nullCount];
+
+        for(int k = 0, z = 0; k < ingredientsToGiveToAPI.length; k++ )
+        {
+            if(ingredientsToGiveToAPI[k] == null)
+            {
+                //DO NOTHING!
+            }
+            else
+            {
+                ingredientsToGiveToApiCondensed[z] = ingredientsToGiveToAPI[k];
+                z++;
+            }
+        }
+
+        Bundle preferences = new Bundle();
+        preferences.putStringArray( "preference" , ingredientsToGiveToAPI );
+        Intent prefData = new Intent(this, RecipePage.class);
+        prefData.putExtras(preferences);
+        startActivity(prefData);
     }
 
     public String[] getIngredients()
