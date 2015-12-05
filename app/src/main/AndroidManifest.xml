@@ -28,7 +28,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity android:name=".Home">
             android:name=".RecipePage"
             android:label="@string/title_activity_recipe_page" >
@@ -45,24 +45,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Get_Recipes"></activity>
-        <activity android:name=".RecipePage"></activity>
-        <activity android:name=".Cookbook"></activity>
-        <activity android:name=".Find_Ingredients"></activity>
-        <activity android:name=".Refrigerator"></activity>
-        <activity android:name=".Never_Cookbook"></activity>
-        <activity android:name=".Amazon_Ordering"></activity>
-        <activity android:name=".AddIngredient"></activity>
+        <activity android:name=".Get_Recipes" />
+        <activity android:name=".RecipePage" />
+        <activity android:name=".Cookbook" />
+        <activity android:name=".Find_Ingredients" />
+        <activity android:name=".Refrigerator" />
+        <activity android:name=".Never_Cookbook" />
+        <activity android:name=".Amazon_Ordering" />
+        <activity android:name=".AddIngredient" />
         <activity
             android:name=".CookBookDummyActivity"
-            android:label="@string/title_activity_cook_book_dummy"></activity>
+            android:label="@string/title_activity_cook_book_dummy" />
         <activity
             android:name=".HomeDummyActivity"
-            android:label="@string/title_activity_home_dummy"></activity>
+            android:label="@string/title_activity_home_dummy" />
         <activity
             android:name=".FridgeDummyActivity"
-            android:label="@string/title_activity_fridge_dummy"></activity>
-        <activity android:name=".RecipeDetail"></activity>
+            android:label="@string/title_activity_fridge_dummy" />
+        <activity android:name=".RecipeDetail" />
     </application>
 
 </manifest>

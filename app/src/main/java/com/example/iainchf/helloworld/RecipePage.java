@@ -87,7 +87,6 @@ public class RecipePage extends AppCompatActivity {
             in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
             in.putExtra("calories", mRecipes.get(position).getCalorieCount());
             in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
-            //in.putExtra("ingredientList", mRecipes.get(position).getIngredientList().toString());
             in.putStringArrayListExtra("ingredients", new ArrayList<String>(mRecipes.get(position).getIngredientList()));
             in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
             in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());

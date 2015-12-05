@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.iainchf.helloworld.RecipeDetail"
+    android:focusableInTouchMode="true"
     android:clickable="false">
 
     <ImageView
@@ -49,10 +50,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/recipeName"
-                />
+                android:onClick="goToInstructions" />
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="800dp"
+                android:layout_height="wrap_content"
                 android:background="#f6f6f6"
                 android:layout_marginTop="15dp"
                 android:id="@+id/ingredientsWrap"
