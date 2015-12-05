@@ -34,8 +34,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 
 /**
- * Created by iainchf on 9/25/15.
- *
+ * @author Iain Raleigh <iain.raleigh.dev@gmail.com>
  * The purpose of this Class is to get data from and HTTP request
  * to use: create a new HttpGetData object
  */
@@ -44,28 +43,41 @@ public class HttpGetData {
     String url;
     String data;
 
-    public HttpGetData(){
-        this.url = "";
-        new DownloadWebpageTask().execute(url);
-    }
-
+    /**
+     * Constructor for customized URL request.
+     * <p>
+     * This is where the Object will begin its request
+     * on another thread to query the URL given.
+     *
+     * @param url takes in a given URL to get data from
+     */
     public HttpGetData(String url){
         this.url = url;
         this.data = null;
         new DownloadWebpageTask().execute(this.url);
     }
 
+    /**
+     * Gets data that was requested for using the URL
+     * <p>
+     * If the the thread the request is working on is not done,
+     * null will be returned.
+     * @return data from the URL used in the Constructor
+     */
+
     public String getData(){
         return this.data;
     }
 
-    private String downloadUrl(String myurl) throws IOException {
-        InputStream is = null;
-        // Only display the first 500 characters of the retrieved
-        // web page content.
-        int len = 10000;
 
-        try {
+    /**
+     * Downloads data from a specified URL, needs to used on a separate thread.
+     * @param myurl URL of the data being requested
+     * @return data in the form of a string (format is determined by source e.g. JSON)
+     * @throws IOException
+     */
+    private String downloadUrl(String myurl) throws IOException {
+        InputStream is;
             URL url = new URL(myurl);
             String https = myurl.substring(0,5);
             if(https.equals("https")){
@@ -98,16 +110,20 @@ public class HttpGetData {
                 is.close();
             }
             return "Data filled";
-
-            // Makes sure that the InputStream is closed after the app is
-            // finished using it.
-        } finally {
-
-        }
     }
 
-
+    /**
+     * @author Iain Raleigh <iain.raleigh.dev@gmail.com>
+     * Extending AsyncTask with custom task.
+     * Uses the downloadUrl() method to invoke request for data.
+     * This allows the use of downloadUrl() to be handled on a seperate thread.
+     */
     private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+        /**
+         * Overriding the AsyncTask doInBackground() to use downloadUrl() from HttpGetData class.
+         * @param urls URLs to be used to get data.
+         * @return data from the respective urls being passed to it.
+         */
         @Override
         protected String doInBackground(String... urls) {
 
@@ -125,7 +141,12 @@ public class HttpGetData {
         }
     }
 
-    // Reads an InputStream and converts it to a String.
+    /**
+     * Used to convert an InputStream object to an String of specified length.
+     * @param stream
+     * @param len Specified length of the string to return.
+     * @return String that represents the passed InputStream.
+     */
     public String readIt(InputStream stream, int len) {
         try {
             Reader reader = null;
