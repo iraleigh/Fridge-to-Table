@@ -1,17 +1,13 @@
 package com.example.iainchf.helloworld;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -37,11 +33,9 @@ public class Get_Recipes extends AppCompatActivity {
 
         ingredients = ingredientListSQL.getIngredients();
 
-        List<Recipe> recipes = ingredientListSQL.getCookbook();
-
         TableLayout IngredientsTable = (TableLayout)findViewById(R.id.IngredientTable);
 
-        ingredientsToGiveToAPI = new String[ingredients.size()];
+        ingredientsToGiveToAPI = new String[ingredients.size() + 1];
 
         //half list size because we want two columns. If we want more than two columns you have to split the list
         //size by the number of columns you have.
@@ -63,19 +57,34 @@ public class Get_Recipes extends AppCompatActivity {
 
             box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //What the check box does when it's checked
                     // All checkboxes start unchecked.
-                    if(buttonView.isChecked())
+                    if (buttonView.isChecked())
                     {
                         //what it does when checked
-                        ingredientsToGiveToAPI[i] = ingredients.get(i).getName();
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                break;
+                            }
+                        }
                     }
                     else
                     {
                         //what it does when unchecked
-                        ingredientsToGiveToAPI[i] = "";
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = null;
+                                break;
+                            }
+                        }
                     }
 
                 }
@@ -86,15 +95,31 @@ public class Get_Recipes extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     //What the check box2 does when it's checked.
                     // All checkboxes start unchecked.
-                    if(buttonView.isChecked())
+                    if (buttonView.isChecked())
                     {
                         //what it does when checked
-                        ingredientsToGiveToAPI[j] = ingredients.get(j).getName();
+                        String ingredientName = (String)buttonView.getText();
+                        for(int l = 0; l < ingredients.size(); l++)
+                        {
+                            if(ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                break;
+                            }
+                        }
                     }
                     else
                     {
                         //what it does when unchecked
-                        ingredientsToGiveToAPI[j] = "";
+                        String ingredientName = (String) buttonView.getText();
+                        for (int l = 0; l < ingredients.size(); l++)
+                        {
+                            if (ingredients.get(l).getName().equals(ingredientName))
+                            {
+                                ingredientsToGiveToAPI[l] = null;
+                                break;
+                            }
+                        }
                     }
                 }
             });
@@ -113,12 +138,31 @@ public class Get_Recipes extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         //What the check box does when it's checked
                         // All checkboxes start unchecked.
-                        if (buttonView.isChecked()) {
+                        if (buttonView.isChecked())
+                        {
                             //what it does when checked
-                            ingredientsToGiveToAPI[ingredients.size() - 1] = ingredients.get(ingredients.size() - 1).getName();
-                        } else {
+                            String ingredientName = (String)buttonView.getText();
+                            for(int l = 0; l < ingredients.size(); l++)
+                            {
+                                if(ingredients.get(l).getName().equals(ingredientName))
+                                {
+                                    ingredientsToGiveToAPI[l] = ingredients.get(l).getName();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
                             //what it does when unchecked
-                            ingredientsToGiveToAPI[ingredients.size() - 1] = "";
+                            String ingredientName = (String) buttonView.getText();
+                            for (int l = 0; l < ingredients.size(); l++)
+                            {
+                                if (ingredients.get(l).getName().equals(ingredientName))
+                                {
+                                    ingredientsToGiveToAPI[l] = null;
+                                    break;
+                                }
+                            }
                         }
                      }
                 });
@@ -126,13 +170,6 @@ public class Get_Recipes extends AppCompatActivity {
                 IngredientsTable.addView(edgeBox);
             }
         }
-
-
-        Spinner spinner;
-        spinner = (Spinner) findViewById(R.id.spinner);
-
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.FILTER , android.R.layout.simple_spinner_item);
-        spinner.setAdapter(adapter);
     }
 
     public void goToRecipe(View v)
