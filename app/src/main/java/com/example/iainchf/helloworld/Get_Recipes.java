@@ -170,6 +170,11 @@ public class Get_Recipes extends AppCompatActivity {
                 IngredientsTable.addView(edgeBox);
             }
         }
+
+        Bundle preferences = new Bundle();
+        preferences.putStringArray( "preference" , ingredientsToGiveToAPI );
+        Intent prefData = new Intent(this, RecipePage.class);
+        prefData.putExtras(preferences);
     }
 
     public void goToRecipe(View v)

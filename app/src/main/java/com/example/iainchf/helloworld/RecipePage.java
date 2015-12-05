@@ -44,6 +44,9 @@ public class RecipePage extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
+        Bundle preferences = this.getIntent().getExtras();
+        String[] preference = preferences.getStringArray("preference");
+
 
         //Get ingredients from the database
         SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
