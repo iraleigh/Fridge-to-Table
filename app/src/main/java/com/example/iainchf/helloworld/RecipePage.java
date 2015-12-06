@@ -36,21 +36,39 @@ public class RecipePage extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
+
+        //Acquiring ingredient preferences from Get_Recipe activity
         Bundle preferences = this.getIntent().getExtras();
         String[] preference = preferences.getStringArray("preference");
 
-
-        //Get ingredients from the database
         SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
                 = SQLiteAPISingletonHandler.getInstance(this);
 
         List<Ingredient> ingredientsFromDatabase
                 = ingredientsFromDatabaseGetter.getIngredients();
 
-        String [] ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
+        String [] ingredientsToGiveToAPIRequest;
 
-        for (int i = 0; i < ingredientsFromDatabase.size(); i++){
-            ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
+        if(preference.length == 0)
+        {
+            //Query off of database b/c there are no preferences
+            //Get ingredients from the database
+            ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
+
+            for (int i = 0; i < ingredientsFromDatabase.size(); i++)
+            {
+                ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
+            }
+        }
+        else
+        {
+            //Query off of preferences
+            ingredientsToGiveToAPIRequest = new String[preference.length];
+
+            for( int i = 0; i < preference.length; i++)
+            {
+                ingredientsToGiveToAPIRequest[i] = preference[i];
+            }
         }
 
         //Get recipes from the api

@@ -200,7 +200,7 @@ public class Get_Recipes extends AppCompatActivity {
         }
 
         Bundle preferences = new Bundle();
-        preferences.putStringArray( "preference" , ingredientsToGiveToAPI );
+        preferences.putStringArray( "preference" , ingredientsToGiveToApiCondensed );
         Intent prefData = new Intent(this, RecipePage.class);
         prefData.putExtras(preferences);
         startActivity(prefData);
