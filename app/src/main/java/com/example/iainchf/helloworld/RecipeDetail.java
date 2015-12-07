@@ -75,6 +75,7 @@ public class RecipeDetail extends AppCompatActivity {
 
         recipeName = (TextView) findViewById(R.id.recipeName);
         recipeName.setText(name);
+        cookbookButton = (ImageButton) findViewById(R.id.addToCookbook);
 
         if(isRecipeInCookbook(idFromAPI)) {
             this.addToCookbook = false;
@@ -83,7 +84,7 @@ public class RecipeDetail extends AppCompatActivity {
             this.addToCookbook = true;
             this.cookbookButton.setBackground(getResources().getDrawable(R.drawable.cookbook_button_inactive));
         }
-
+        recipeView = (ImageView) findViewById(R.id.recipeImageView);
         iv = (ImageView) findViewById(R.id.bcgImage);
         try {
             bitmap = new GetBitmapFromURL().execute(imageUrl).get();
