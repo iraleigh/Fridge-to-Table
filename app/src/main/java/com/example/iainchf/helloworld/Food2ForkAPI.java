@@ -1,32 +1,13 @@
 package com.example.iainchf.helloworld;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.Build;
-import android.util.JsonReader;
-import android.util.JsonToken;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.example.iainchf.helloworld.RecipesProviderAPI;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonStreamParser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONTokener;
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +29,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
      * initialized url and ingredients to empty variables
      */
     public Food2ForkAPI() {
-        url = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
+        url = "http://food2fork.com/api/search?key=61501f7532d789ba822260444db1efed&q=";
         ingredients = new String[0];
     }
 
@@ -71,7 +52,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
         ids = parseJsonForID(json);
 
         if(ids.size() < 1){
-            url = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
+            url = "http://food2fork.com/api/search?key=61501f7532d789ba822260444db1efed&q=";
             noRecipesFound = true;
 
             food2ForkGetter = new HttpGetData(url);
@@ -140,7 +121,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createSearchURL() {
-        String tempUrl = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
+        String tempUrl = "http://food2fork.com/api/search?key=61501f7532d789ba822260444db1efed&q=";
         for(String i: ingredients){
             tempUrl += i + "%20";
         }
@@ -148,7 +129,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createGetURL(String id) {
-        return "http://food2fork.com/api/get?key=dbbbfeea06ecad86b07d2e521cf9e95f&rId=" + id;
+        return "http://food2fork.com/api/get?key=61501f7532d789ba822260444db1efed&rId=" + id;
     }
 
 
