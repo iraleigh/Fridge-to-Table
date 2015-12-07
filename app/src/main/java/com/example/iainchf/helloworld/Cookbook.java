@@ -20,11 +20,24 @@ public class Cookbook extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cookbook);
-        ArrayAdapter<Recipe> adapt = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1, savedRecipes);
+
+        //ArrayAdapter<Recipe> adapt = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1, savedRecipes);
         ListView list = (ListView) findViewById(R.id.listView2);
-        list.setAdapter(adapt);
+        list.setHeaderDividersEnabled(true);
+
+
         SQLiteAPISingletonHandler insta = SQLiteAPISingletonHandler.getInstance(this);
         savedRecipes.addAll(insta.getCookbook());
+
+
+        String [] recipeNames = new String[savedRecipes.size()];
+        String [] recipeImageURL = new String[savedRecipes.size()];
+        for(int i = 0; i < savedRecipes.size(); i++){
+            recipeNames[i] = savedRecipes.get(i).getName();
+            recipeImageURL[i] = savedRecipes.get(i).getImageUrl();
+        }
+        RecipeList adapter = new RecipeList(Cookbook.this, recipeNames,recipeImageURL);
+        list.setAdapter(adapter);
         //Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0,new ArrayList<String>(),"","api", "apiId");
 
         //for (int i = 0; i < numSavedRecipes; i++) {

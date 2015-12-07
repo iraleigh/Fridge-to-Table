@@ -7,13 +7,19 @@
     tools:context="com.example.iainchf.helloworld.RecipePage"
     android:id="@+id/RecipePage">
 
-
+    <TextView
+        android:id="@+id/recipes_not_found_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_title_material"
+        />
 
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mainListView">
+        android:id="@+id/mainListView"
+        android:layout_below="@id/recipes_not_found_warning">
     </ListView>
 
 

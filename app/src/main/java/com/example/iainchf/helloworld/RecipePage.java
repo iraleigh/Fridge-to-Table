@@ -1,19 +1,28 @@
 package com.example.iainchf.helloworld;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -75,7 +84,13 @@ public class RecipePage extends AppCompatActivity {
         Food2ForkAPI apiToHandleRequest = new Food2ForkAPI(ingredientsToGiveToAPIRequest);
 
         List<Recipe> listOfFiveSampleRecipes = apiToHandleRequest.getFiveRecipes();
-        mRecipes.addAll(listOfFiveSampleRecipes);
+        if(apiToHandleRequest.noRecipesFound){
+            TextView warning = (TextView) findViewById(R.id.recipes_not_found_warning);
+            warning.setText("Recipes from your ingredients not found, \n edit Filter Ingredients");
+            mRecipes.addAll(listOfFiveSampleRecipes);
+        } else {
+            mRecipes.addAll(listOfFiveSampleRecipes);
+        }
 
         //Get the names of the recipes for the list adapter
         final String [] recipeNames = new String[listOfFiveSampleRecipes.size()];
@@ -116,6 +131,8 @@ public class RecipePage extends AppCompatActivity {
 
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
