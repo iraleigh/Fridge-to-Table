@@ -34,7 +34,7 @@ import java.util.List;
  * Created by iainchf on 9/30/15.
  */
 public class Food2ForkAPI extends RecipesProviderAPI {
-    private final String API_KEY = "71fe34c42d591a241f16db619cf00511";
+    private final String API_KEY = "dbbbfeea06ecad86b07d2e521cf9e95f";
     private List<Recipe> recipeList;
     private String [] ingredients;
     private String url;
