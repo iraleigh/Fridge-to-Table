@@ -36,21 +36,39 @@ public class RecipePage extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
+
+        //Acquiring ingredient preferences from Get_Recipe activity
         Bundle preferences = this.getIntent().getExtras();
         String[] preference = preferences.getStringArray("preference");
 
-
-        //Get ingredients from the database
         SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
                 = SQLiteAPISingletonHandler.getInstance(this);
 
         List<Ingredient> ingredientsFromDatabase
                 = ingredientsFromDatabaseGetter.getIngredients();
 
-        String [] ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
+        String [] ingredientsToGiveToAPIRequest;
 
-        for (int i = 0; i < ingredientsFromDatabase.size(); i++){
-            ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
+        if(preference.length == 0)
+        {
+            //Query off of database b/c there are no preferences
+            //Get ingredients from the database
+            ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
+
+            for (int i = 0; i < ingredientsFromDatabase.size(); i++)
+            {
+                ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
+            }
+        }
+        else
+        {
+            //Query off of preferences
+            ingredientsToGiveToAPIRequest = new String[preference.length];
+
+            for( int i = 0; i < preference.length; i++)
+            {
+                ingredientsToGiveToAPIRequest[i] = preference[i];
+            }
         }
 
         //Get recipes from the api
@@ -80,20 +98,20 @@ public class RecipePage extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent in = new Intent(RecipePage.this, RecipeDetail.class);
-            in.putExtra("name", mRecipes.get(position).getName());
-            in.putExtra("description", mRecipes.get(position).getDescription());
-            in.putExtra("instructions", mRecipes.get(position).getInstructions());
-            in.putExtra("videoURL", mRecipes.get(position).getVideoURL());
-            in.putExtra("dietFood", mRecipes.get(position).isDiet());
-            in.putExtra("hasCaffeine", mRecipes.get(position).isCaffeinated());
-            in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
-            in.putExtra("calories", mRecipes.get(position).getCalorieCount());
-            in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
-            in.putStringArrayListExtra("ingredients", new ArrayList<String>(mRecipes.get(position).getIngredientList()));
-            in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
-            in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());
-            startActivity(in);
+                Intent in = new Intent(RecipePage.this, RecipeDetail.class);
+                in.putExtra("name", mRecipes.get(position).getName());
+                in.putExtra("description", mRecipes.get(position).getDescription());
+                in.putExtra("instructions", mRecipes.get(position).getInstructions());
+                in.putExtra("videoURL", mRecipes.get(position).getVideoURL());
+                in.putExtra("dietFood", mRecipes.get(position).isDiet());
+                in.putExtra("hasCaffeine", mRecipes.get(position).isCaffeinated());
+                in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
+                in.putExtra("calories", mRecipes.get(position).getCalorieCount());
+                in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
+                in.putStringArrayListExtra("ingredients", new ArrayList<String>(mRecipes.get(position).getIngredientList()));
+                in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
+                in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());
+                startActivity(in);
             }
 
         });
