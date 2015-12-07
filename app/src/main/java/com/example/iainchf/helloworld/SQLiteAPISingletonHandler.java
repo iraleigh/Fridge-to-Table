@@ -12,7 +12,10 @@ import java.util.List;
 
 /**
  * Created by iainchf on 11/9/15.
- *
+ * @author Iain Raleigh <iain.raleigh.dev@gmail.com>
+ * The purpose of this class is to give access to the database tables.
+ * NOTE It is a Singleton class and must be instanciated through the
+ * getInstance() method with a Static call.
  */
 public class SQLiteAPISingletonHandler {
     private static SQLiteAPIHelper sqLitehelper;
@@ -22,6 +25,11 @@ public class SQLiteAPISingletonHandler {
 
     private static SQLiteAPISingletonHandler instance = new SQLiteAPISingletonHandler();
 
+    /**
+     * Singleton accessor. Use instead of constructor.
+     * @param context Of the Class that is using it.
+     * @return A single instance of the SQLiteAPISingletonHandler
+     */
     public static SQLiteAPISingletonHandler getInstance(Context context){
         instance.setSQLiteAPIHelper(context);
         return instance;
@@ -30,16 +38,22 @@ public class SQLiteAPISingletonHandler {
         db.close();
     }
 
-
+    /**
+     * Sets the Helper class for this Class to use.
+     * <p>
+     * This helper is used to create / update / destroy
+     * the necessary Tables in the Database.
+     * @param context Of the Class that is using it.
+     */
     private void setSQLiteAPIHelper(Context context){
         sqLitehelper = new SQLiteAPIHelper(context);
     }
-    /*
-     * This is a list of requested methods and there respective
-     * functionality.
-     */
 
-    //gets list of all ingredients in the DB
+
+    /**
+     * Gets the Ingredients from the Ingredients Table (Refrigerator)
+     * @return List of Ingredients
+     */
     public List<Ingredient> getIngredients() {
         List<Ingredient> ingredientsList = new ArrayList<>();
 
@@ -86,7 +100,10 @@ public class SQLiteAPISingletonHandler {
         return ingredientsList;
     }
 
-    //adds one ingredient to the DB
+    /**
+     * Adds an Ingredient to the Ingredients Table (Refrigerator)
+     * @param ingredient to add
+     */
     public void addIngredient(Ingredient ingredient) {
         // Gets the data repository in write mode
         db = sqLitehelper.getWritableDatabase();
@@ -108,7 +125,10 @@ public class SQLiteAPISingletonHandler {
         ingredient.setId(newRowId);
     }
 
-    //removes an ingredient with a given id from the DB
+    /**
+     * Removes an Ingredient from Ingredients Table (Refrigerator)
+     * @param id from the Ingredient object (call getId() method)
+     */
     public void removeIngredient(long id) {
         db = sqLitehelper.getWritableDatabase();
         db.delete(
@@ -1211,7 +1231,10 @@ public class SQLiteAPISingletonHandler {
         return ingredientsList;
     }
 
-
+    /**
+     * Gets the Recipes from the RecipeList Table (Cookbook)
+     * @return a list of Recipes
+     */
     public List<Recipe> getCookbook(){
         List<Recipe> favoriteRecipes = new ArrayList<>();
 
@@ -1262,6 +1285,10 @@ public class SQLiteAPISingletonHandler {
         return favoriteRecipes;
     }
 
+    /**
+     * Adds a Recipe to the RecipeList Table (Cookbook)
+     * @param recipe to add
+     */
     public void addRecipeToCookbook(Recipe recipe) {
         // Gets the data repository in write mode
         db = sqLitehelper.getWritableDatabase();
@@ -1278,6 +1305,10 @@ public class SQLiteAPISingletonHandler {
         db.insert(SQLiteTablesContract.CookBookOfFavoriteRecipes.TABLE_NAME,"null",values);
     }
 
+    /**
+     * Removes a recipe from the RecipeList Table (Cookbook)
+     * @param recipe to remove
+     */
     public void removeRecipeFromCookbook(Recipe recipe){
         db = sqLitehelper.getWritableDatabase();
         db.delete(

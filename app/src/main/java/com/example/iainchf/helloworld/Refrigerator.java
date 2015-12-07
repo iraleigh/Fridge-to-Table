@@ -41,14 +41,17 @@ public class Refrigerator extends AppCompatActivity {
         TextView fridgeIsEmptyLabel = (TextView) findViewById(R.id.fridgeIsEmptyLabel);
         TextView addIngredientsLabel = (TextView) findViewById(R.id.addIngredientsLabel);
         ImageView addIngredientsArrow = (ImageView) findViewById(R.id.addIngredientsArrow);
+        ImageButton next = (ImageButton) findViewById(R.id.button_next);
         if(ingredientsList.size() == 0) {
             fridgeIsEmptyLabel.setVisibility(View.VISIBLE);
             addIngredientsLabel.setVisibility(View.VISIBLE);
             addIngredientsArrow.setVisibility(View.VISIBLE);
+            next.setEnabled(false);
         } else {
             fridgeIsEmptyLabel.setVisibility(View.INVISIBLE);
             addIngredientsLabel.setVisibility(View.INVISIBLE);
             addIngredientsArrow.setVisibility(View.INVISIBLE);
+            next.setEnabled(true);
         }
     }
 

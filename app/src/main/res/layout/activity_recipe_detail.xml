@@ -7,6 +7,20 @@
     android:focusableInTouchMode="true"
     android:clickable="false">
 
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/addToCookbook"
+        android:background="@drawable/cookbook_button_inactive"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:elevation="5dp"
+        android:src="@drawable/heart_icon"
+        android:layout_alignParentEnd="true"
+        android:onClick="cookbookButtonTapped" />
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="220dp"
@@ -31,6 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="100dp"
+            android:elevation="3dp"
             android:background="#fff">
 
             <TextView
@@ -71,24 +86,23 @@
                     android:layout_below="@+id/ingredientsTitle"
                     android:layout_marginTop="10dp"
                     android:id="@+id/listIngredientsView"></ListView>
-            </RelativeLayout>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ingredientsWrap"
-                />
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recipeImageView"
-                android:scaleType="centerCrop"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recipeImageView"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@+id/listIngredientsView"
+                    android:background="#ff0000"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
-
 
     </ScrollView>
 

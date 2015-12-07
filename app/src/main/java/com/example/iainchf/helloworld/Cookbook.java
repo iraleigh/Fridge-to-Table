@@ -1,63 +1,81 @@
 package com.example.iainchf.helloworld;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Cookbook extends AppCompatActivity {
-    int numSavedRecipes = 1;
-    ArrayList<Recipe> savedRecipes= new ArrayList<>();
+
+    private ArrayList<Recipe> savedRecipes= new ArrayList<>();
+
+    private ListView list;
+    private RecipeList adapter;
+    private String [] recipeNames;
+    private String [] recipeImageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cookbook);
 
-        //ArrayAdapter<Recipe> adapt = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1, savedRecipes);
-        ListView list = (ListView) findViewById(R.id.listView2);
+        list = (ListView) findViewById(R.id.listView2);
         list.setHeaderDividersEnabled(true);
 
+        setTitle("Cookbook");
 
-        SQLiteAPISingletonHandler insta = SQLiteAPISingletonHandler.getInstance(this);
-        savedRecipes.addAll(insta.getCookbook());
+        populateCookbook();
 
+        adapter = new RecipeList(Cookbook.this, recipeNames, recipeImageURL);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        String [] recipeNames = new String[savedRecipes.size()];
-        String [] recipeImageURL = new String[savedRecipes.size()];
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent in = new Intent(Cookbook.this, RecipeDetail.class);
+                in.putExtra("name", savedRecipes.get(position).getName());
+                in.putExtra("description", savedRecipes.get(position).getDescription());
+                in.putExtra("instructions", savedRecipes.get(position).getInstructions());
+                in.putExtra("videoURL", savedRecipes.get(position).getVideoURL());
+                in.putExtra("dietFood", savedRecipes.get(position).isDiet());
+                in.putExtra("hasCaffeine", savedRecipes.get(position).isCaffeinated());
+                in.putExtra("glutenFree", savedRecipes.get(position).isGlutenFree());
+                in.putExtra("calories", savedRecipes.get(position).getCalorieCount());
+                in.putExtra("nameOfAPI", savedRecipes.get(position).getNameOfAPI());
+                in.putStringArrayListExtra("ingredients", new ArrayList<String>(savedRecipes.get(position).getIngredientList()));
+                in.putExtra("idFromAPI", savedRecipes.get(position).getIdFromAPI());
+                in.putExtra("imageUrl", savedRecipes.get(position).getImageUrl());
+                startActivity(in);
+            }
+
+        });
+
+    }
+
+    private void populateCookbook() {
+        SQLiteAPISingletonHandler instance = SQLiteAPISingletonHandler.getInstance(this);
+        savedRecipes.clear();
+        savedRecipes.addAll(instance.getCookbook());
+        recipeNames = new String[savedRecipes.size()];
+        recipeImageURL = new String[savedRecipes.size()];
         for(int i = 0; i < savedRecipes.size(); i++){
             recipeNames[i] = savedRecipes.get(i).getName();
             recipeImageURL[i] = savedRecipes.get(i).getImageUrl();
         }
-        RecipeList adapter = new RecipeList(Cookbook.this, recipeNames,recipeImageURL);
-        list.setAdapter(adapter);
-        //Recipe sample = new Recipe("Lasagna", "Meat dish", "Put in oven", "vURL", false, false, false, 0,new ArrayList<String>(),"","api", "apiId");
-
-        //for (int i = 0; i < numSavedRecipes; i++) {
-          //  savedRecipes.add(i, sample);
-        //}
     }
 
-        /*public void delete (View view) {
-            savedRecipes.remove(numSavedRecipes);
-            numSavedRecipes = numSavedRecipes - 1;
-        }*/
-
-    public void goToGetRecipes(View v){
-        Intent in = new Intent(this,Get_Recipes.class);
-        startActivity(in);
-    }
-
-    public void goToHome(View v){
-        Intent in = new Intent(this,Home.class);
-        startActivity(in);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateCookbook();
+        RecipeList adapter1 = new RecipeList(Cookbook.this, recipeNames, recipeImageURL);
+        list.setAdapter(adapter1);
     }
 
     @Override

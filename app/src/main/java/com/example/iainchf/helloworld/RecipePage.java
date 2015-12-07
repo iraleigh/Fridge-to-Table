@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,9 @@ public class RecipePage extends AppCompatActivity {
     int mCurrentImageIterator = 0;
     */
     List<Recipe> mRecipes;
+    ProgressBar mProgress;
+    private Handler mHandler = new Handler();
+    boolean mRecipesNotFound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,99 +45,117 @@ public class RecipePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_page);
         mRecipes = new ArrayList<>();
+        final Bundle preferences = this.getIntent().getExtras();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+                mProgress.setIndeterminate(true);
+                //Acquiring ingredient preferences from Get_Recipe activity
+                String[] preference = new String[0];
+                if(preferences != null){
+                    preference = preferences.getStringArray("preference");
+                }
+
+                SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
+                        = SQLiteAPISingletonHandler.getInstance(RecipePage.this);
+
+                List<Ingredient> ingredientsFromDatabase
+                        = ingredientsFromDatabaseGetter.getIngredients();
+
+                String [] ingredientsToGiveToAPIRequest;
+
+                if(preference.length == 0)
+                {
+                    //Query off of database b/c there are no preferences
+                    //Get ingredients from the database
+                    ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
+
+                    for (int i = 0; i < ingredientsFromDatabase.size(); i++)
+                    {
+                        ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
+                    }
+                }
+                else
+                {
+                    //Query off of preferences
+                    ingredientsToGiveToAPIRequest = new String[preference.length];
+
+                    for( int i = 0; i < preference.length; i++)
+                    {
+                        ingredientsToGiveToAPIRequest[i] = preference[i];
+                    }
+                }
+
+                //Get recipes from the api
+                Food2ForkAPI apiToHandleRequest = new Food2ForkAPI(ingredientsToGiveToAPIRequest);
+                //YummlyAPI apiToRetrieveExtraRecipes = new YummlyAPI(ingredientsToGiveToAPIRequest);
+
+                List<Recipe> listOfSampleRecipes = apiToHandleRequest.getRecipes();
+                mRecipesNotFound = apiToHandleRequest.noRecipesFound;
+                mRecipes.addAll(listOfSampleRecipes);
+
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgress.setVisibility(View.GONE);
+                        if (mRecipesNotFound){
+                            TextView warning = (TextView) findViewById(R.id.recipes_not_found_warning);
+                            warning.setText("Recipes from your ingredients not found, \n edit Filter Ingredients");
+                        } else {
+
+                            //Get the names of the recipes for the list adapter
+                            String[] recipeNames = new String[mRecipes.size()];
+                            String[] recipeImageURL = new String[mRecipes.size()];
+                            for (int i = 0; i < mRecipes.size(); i++) {
+                                recipeNames[i] = mRecipes.get(i).getName();
+                                recipeImageURL[i] = mRecipes.get(i).getImageUrl();
+                            }
+                            //Create a list to display recipe names and images
+                            ListView recipeList = (ListView) findViewById(R.id.mainListView);
+
+                            //Create an adapter from the names and image URLs
+                            RecipeList adapter = new RecipeList(RecipePage.this, recipeNames, recipeImageURL);
+
+                            //Populate the list with Recipes from the adapter
+                            recipeList.setAdapter(adapter);
+                            recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent in = new Intent(RecipePage.this, RecipeDetail.class);
+                                    in.putExtra("name", mRecipes.get(position).getName());
+                                    in.putExtra("description", mRecipes.get(position).getDescription());
+                                    in.putExtra("instructions", mRecipes.get(position).getInstructions());
+                                    in.putExtra("videoURL", mRecipes.get(position).getVideoURL());
+                                    in.putExtra("dietFood", mRecipes.get(position).isDiet());
+                                    in.putExtra("hasCaffeine", mRecipes.get(position).isCaffeinated());
+                                    in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
+                                    in.putExtra("calories", mRecipes.get(position).getCalorieCount());
+                                    in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
+                                    in.putStringArrayListExtra("ingredients", new ArrayList<String>(mRecipes.get(position).getIngredientList()));
+                                    in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
+                                    in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());
+                                    startActivity(in);
+                                }
+
+                            });
+                        }
+                    }
+                });
+
+            }
+        }).start();
 
     }
     public void onStart(){
         super.onStart();
 
 
-        //Acquiring ingredient preferences from Get_Recipe activity
-        Bundle preferences = this.getIntent().getExtras();
-        String[] preference = new String[0];
-        if(preferences != null){
-            preference = preferences.getStringArray("preference");
-        }
 
-        SQLiteAPISingletonHandler ingredientsFromDatabaseGetter
-                = SQLiteAPISingletonHandler.getInstance(this);
-
-        List<Ingredient> ingredientsFromDatabase
-                = ingredientsFromDatabaseGetter.getIngredients();
-
-        String [] ingredientsToGiveToAPIRequest;
-
-        if(preference.length == 0)
-        {
-            //Query off of database b/c there are no preferences
-            //Get ingredients from the database
-            ingredientsToGiveToAPIRequest = new String[ingredientsFromDatabase.size()];
-
-            for (int i = 0; i < ingredientsFromDatabase.size(); i++)
-            {
-                ingredientsToGiveToAPIRequest[i] = ingredientsFromDatabase.get(i).getName();
-            }
-        }
-        else
-        {
-            //Query off of preferences
-            ingredientsToGiveToAPIRequest = new String[preference.length];
-
-            for( int i = 0; i < preference.length; i++)
-            {
-                ingredientsToGiveToAPIRequest[i] = preference[i];
-            }
-        }
-
-        //Get recipes from the api
-        Food2ForkAPI apiToHandleRequest = new Food2ForkAPI(ingredientsToGiveToAPIRequest);
-
-        List<Recipe> listOfFiveSampleRecipes = apiToHandleRequest.getFiveRecipes();
-        if(apiToHandleRequest.noRecipesFound){
-            TextView warning = (TextView) findViewById(R.id.recipes_not_found_warning);
-            warning.setText("Recipes from your ingredients not found, \n edit Filter Ingredients");
-            mRecipes.addAll(listOfFiveSampleRecipes);
-        } else {
-            mRecipes.addAll(listOfFiveSampleRecipes);
-        }
-
-        //Get the names of the recipes for the list adapter
-        final String [] recipeNames = new String[listOfFiveSampleRecipes.size()];
-        String [] recipeImageURL = new String[listOfFiveSampleRecipes.size()];
-        for(int i = 0; i < listOfFiveSampleRecipes.size(); i++) {
-            recipeNames[i] = listOfFiveSampleRecipes.get(i).getName();
-            recipeImageURL[i] = listOfFiveSampleRecipes.get(i).getImageUrl();
-        }
-
-
-        //Create a list to display recipe names and images
-        ListView recipeList = (ListView) findViewById(R.id.mainListView);
-
-        //Create an adapter from the names and image URLs
-        RecipeList adapter = new RecipeList(RecipePage.this, recipeNames,recipeImageURL);
-
-        //Populate the list with Recipes from the adapter
-        recipeList.setAdapter(adapter);
-        recipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(RecipePage.this, RecipeDetail.class);
-                in.putExtra("name", mRecipes.get(position).getName());
-                in.putExtra("description", mRecipes.get(position).getDescription());
-                in.putExtra("instructions", mRecipes.get(position).getInstructions());
-                in.putExtra("videoURL", mRecipes.get(position).getVideoURL());
-                in.putExtra("dietFood", mRecipes.get(position).isDiet());
-                in.putExtra("hasCaffeine", mRecipes.get(position).isCaffeinated());
-                in.putExtra("glutenFree", mRecipes.get(position).isGlutenFree());
-                in.putExtra("calories", mRecipes.get(position).getCalorieCount());
-                in.putExtra("nameOfAPI", mRecipes.get(position).getNameOfAPI());
-                in.putStringArrayListExtra("ingredients", new ArrayList<String>(mRecipes.get(position).getIngredientList()));
-                in.putExtra("idFromAPI", mRecipes.get(position).getIdFromAPI());
-                in.putExtra("imageUrl", mRecipes.get(position).getImageUrl());
-                startActivity(in);
-            }
-
-        });
     }
 
 

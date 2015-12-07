@@ -11,9 +11,9 @@
         android:id="@+id/addIngredientsArrow"
         android:src="@drawable/down_arrow"
         android:layout_above="@+id/imageButton"
-        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="6dp"
-        android:layout_toRightOf="@+id/addIngredientsLabel"
+        android:layout_toLeftOf="@+id/addIngredientsLabel"
         android:layout_below="@+id/addIngredientsLabel"
         android:alpha="0.5" />
 
@@ -23,12 +23,12 @@
         android:id="@+id/imageButton"
         android:background="@layout/circle_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:elevation="5dp"
         android:src="@drawable/add_ingredient"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:onClick="goToAddIngredient" />
     <ListView
         android:layout_width="wrap_content"
@@ -63,14 +63,14 @@
     <ImageButton
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/imageButton3"
-        android:background="@layout/circle_button"
+        android:id="@+id/button_next"
+        android:background="@drawable/next_button"
         android:elevation="5dp"
         android:onClick="goToGetRecipes"
-        android:layout_below="@+id/addIngredientsArrow"
-        android:layout_toLeftOf="@+id/addIngredientsArrow"
-        android:layout_toStartOf="@+id/addIngredientsArrow"
-        android:src="@drawable/next" />
+        android:src="@drawable/next_arrow"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imageButton" />
 
 
 </RelativeLayout>
