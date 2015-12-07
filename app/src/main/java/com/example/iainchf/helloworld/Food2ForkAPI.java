@@ -103,7 +103,11 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                 recipeList.add(parseJsonForRecipes(json, ids.get(i)));
             }
             int oldPlaceInList = placeInIdList;
-            placeInIdList += recipeList.size();
+            if(recipeList.size() < (placeInIdList + 5)) {
+                placeInIdList += recipeList.size();
+            } else {
+                placeInIdList +=5;
+            }
             return recipeList.subList(oldPlaceInList,placeInIdList);
         } else {
             return new ArrayList<>();
