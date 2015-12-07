@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.iainchf.helloworld.Refrigerator">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addIngredientsArrow"
+        android:src="@drawable/down_arrow"
+        android:layout_above="@+id/imageButton"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="6dp"
+        android:layout_toLeftOf="@+id/addIngredientsLabel"
+        android:layout_below="@+id/addIngredientsLabel"
+        android:alpha="0.5" />
+
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/imageButton"
+        android:background="@layout/circle_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:elevation="5dp"
+        android:src="@drawable/add_ingredient"
+        android:layout_alignParentStart="true"
+        android:onClick="goToAddIngredient" />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:paddingLeft="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/imageButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Your refrigerator is empty"
+        android:textSize="22dp"
+        android:id="@+id/fridgeIsEmptyLabel"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Add ingredients here"
+        android:layout_marginTop="8dp"
+        android:id="@+id/addIngredientsLabel"
+        android:layout_below="@+id/fridgeIsEmptyLabel"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/button_next"
+        android:background="@drawable/next_button"
+        android:elevation="5dp"
+        android:onClick="goToGetRecipes"
+        android:src="@drawable/next_arrow"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imageButton" />
+
+
+</RelativeLayout>

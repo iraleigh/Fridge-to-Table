@@ -1,0 +1,8 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/get_recipes" android:title="Get Recipes"/>
+    <item android:id="@+id/filter_recipes" android:title="Filter Ingredients"/>
+    <item android:id="@+id/fridge" android:title="Edit Fridge"/>
+    <item android:id="@+id/find_ingredients" android:title="Find Ingredients"/>
+    <item android:id="@+id/cookbook" android:title="Cookbook"/>
+</menu>
