@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RecipeDetail extends AppCompatActivity {
@@ -56,7 +56,6 @@ public class RecipeDetail extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_detail);
 
         this.context = getApplicationContext();
-        this.addToCookbook = true;
 
         Bundle b = getIntent().getExtras();
         name = b.getString("name");
@@ -77,6 +76,14 @@ public class RecipeDetail extends AppCompatActivity {
         recipeView = (ImageView) findViewById(R.id.recipeImageView);
         cookbookButton = (ImageButton) findViewById(R.id.addToCookbook);
 
+        if(isRecipeInCookbook(idFromAPI)) {
+            this.addToCookbook = false;
+            this.cookbookButton.setBackground(getResources().getDrawable(R.drawable.cookbook_button_active));
+        } else {
+            this.addToCookbook = true;
+            this.cookbookButton.setBackground(getResources().getDrawable(R.drawable.cookbook_button_inactive));
+        }
+
         iv = (ImageView) findViewById(R.id.bcgImage);
         try {
             bitmap = new GetBitmapFromURL().execute(imageUrl).get();
@@ -93,6 +100,17 @@ public class RecipeDetail extends AppCompatActivity {
         lv.setAdapter(arrayAdapter);
         setHeightOfListView(lv, recipeView, bitmap);
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public boolean isRecipeInCookbook(String idFromAPI) {
+        List<Recipe> cookbook = SQLiteAPISingletonHandler.getInstance(context).getCookbook();
+        for(int i=0; i<cookbook.size(); i++) {
+            if(cookbook.get(i).getIdFromAPI().equals(idFromAPI)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void goToInstructions (View v) {
@@ -120,7 +138,6 @@ public class RecipeDetail extends AppCompatActivity {
             toast.show();
             this.addToCookbook = true;
         }
-        Log.d("DDD", Integer.toString(SQLiteAPISingletonHandler.getInstance(context).getCookbook().size()));
     }
 
     public static void setHeightOfListView(ListView listView, ImageView recipeView, Bitmap bitmap) {
