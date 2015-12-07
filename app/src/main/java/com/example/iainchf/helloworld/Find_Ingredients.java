@@ -91,6 +91,7 @@ public class Find_Ingredients extends AppCompatActivity implements GoogleApiClie
     @Override
     protected void onStart() {
         super.onStart();
+        setContentView(R.layout.activity_find__ingredients);
         mGoogleApiClient.connect();
     }
 

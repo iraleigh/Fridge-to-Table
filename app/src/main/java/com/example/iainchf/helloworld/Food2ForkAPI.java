@@ -41,13 +41,14 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     private int placeInIdList;
     public static final String PARSE_JSON_FOR_ID_TAG = "Inside ";
     public static final String PARSE_JSON_FOR_RECIPE_TAG = "Inside ";
+    public boolean noRecipesFound = false;
 
     /**
      * Default Constructor
      * initialized url and ingredients to empty variables
      */
     public Food2ForkAPI() {
-        url = "http://api.pearson.com/kitchen-manager/v1/recipes&apikey=7UjHagYAAZld0RphoLRAAjpXumj0Avlu";
+        url = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
         ingredients = new String[0];
     }
 
@@ -69,6 +70,19 @@ public class Food2ForkAPI extends RecipesProviderAPI {
 
         ids = parseJsonForID(json);
 
+        if(ids.size() < 1){
+            url = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
+            noRecipesFound = true;
+
+            food2ForkGetter = new HttpGetData(url);
+
+            while(food2ForkGetter.getData() == null);
+
+            json = food2ForkGetter.getData();
+
+            ids = parseJsonForID(json);
+        }
+
         placeInIdList = 0;
 
 
@@ -89,7 +103,11 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                 recipeList.add(parseJsonForRecipes(json, ids.get(i)));
             }
             int oldPlaceInList = placeInIdList;
-            placeInIdList += 5;
+            if(recipeList.size() < (placeInIdList + 5)) {
+                placeInIdList += recipeList.size();
+            } else {
+                placeInIdList +=5;
+            }
             return recipeList.subList(oldPlaceInList,placeInIdList);
         } else {
             return new ArrayList<>();
@@ -122,7 +140,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createSearchURL() {
-        String tempUrl = "http://food2fork.com/api/search?key=29fb1cf6ce48d1a96714bf6a84dfabfc&q=";
+        String tempUrl = "http://food2fork.com/api/search?key=dbbbfeea06ecad86b07d2e521cf9e95f&q=";
         for(String i: ingredients){
             tempUrl += i + "%20";
         }
@@ -130,7 +148,7 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     public String createGetURL(String id) {
-        return "http://food2fork.com/api/get?key=29fb1cf6ce48d1a96714bf6a84dfabfc&rId=" + id;
+        return "http://food2fork.com/api/get?key=dbbbfeea06ecad86b07d2e521cf9e95f&rId=" + id;
     }
 
 
@@ -167,7 +185,11 @@ public class Food2ForkAPI extends RecipesProviderAPI {
                     }
                     reader.endArray();
                 } else if (name.equals("count")) {
-                    reader.skipValue();
+                    if(reader.nextInt() == 0){
+                        return ids;
+                    }
+                } else if(name.equals("error")){
+                    return ids;
                 }
             }
             reader.endObject();
