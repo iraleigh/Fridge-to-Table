@@ -17,5 +17,6 @@
         <item>Vegetarian</item>
         <item>Kosher</item>
     </string-array>
+    <string name="title_activity_instructions">Instructions</string>
 
 </resources>

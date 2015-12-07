@@ -14,7 +14,9 @@
         android:scrollbars="none"
         android:layout_weight="1"
         android:id="@+id/scrollView"
-        android:layout_above="@+id/textView4">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/imageButton2">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,37 +33,17 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Filter by :"
-        android:id="@+id/textView4"
-        android:layout_marginLeft="47dp"
-        android:layout_marginStart="47dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_toEndOf="@+id/textView4" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done!"
-        android:id="@+id/button6"
-        android:layout_marginBottom="69dp"
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/imageButton2"
+        android:background="@layout/circle_button"
+        android:elevation="5dp"
+        android:src="@drawable/next"
+        android:onClick="goToRecipe"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="goToRecipe"/>
+        android:layout_alignRight="@+id/scrollView"
+        android:layout_alignEnd="@+id/scrollView" />/>
 
 
 </RelativeLayout>

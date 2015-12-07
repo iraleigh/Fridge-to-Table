@@ -1,11 +1,10 @@
 package com.example.iainchf.helloworld;
 
 import android.app.Activity;
-import android.widget.ArrayAdapter;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +27,7 @@ public class RecipeList extends ArrayAdapter<String> {
         imagesToLoad = new ArrayList<>();
     }
     @Override
-    public View getView(int position, View view, ViewGroup parent){
+    public View getView(int position, View view, ViewGroup parent) {
 
         LayoutInflater inflater = context.getLayoutInflater();
 
@@ -39,7 +38,7 @@ public class RecipeList extends ArrayAdapter<String> {
 
         txtTitle.setText(recipeNames[position]);
 
-        imageView.setImageResource(R.drawable.default_food_icon);
+        //imageView.setImageResource(R.drawable.default_food_icon);
 
         imagesToLoad.add(imageView);
 

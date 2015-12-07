@@ -60,5 +60,17 @@
         android:layout_below="@+id/fridgeIsEmptyLabel"
         android:layout_centerHorizontal="true" />
 
+    <ImageButton
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/imageButton3"
+        android:background="@layout/circle_button"
+        android:elevation="5dp"
+        android:onClick="goToGetRecipes"
+        android:layout_below="@+id/addIngredientsArrow"
+        android:layout_toLeftOf="@+id/addIngredientsArrow"
+        android:layout_toStartOf="@+id/addIngredientsArrow"
+        android:src="@drawable/next" />
+
 
 </RelativeLayout>

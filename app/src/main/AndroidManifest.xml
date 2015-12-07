@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.iainchf.helloworld" >
-
+    package="com.example.iainchf.helloworld">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,24 +14,22 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Fridge to Table"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
-            tools:replace="android:value"
             android:name="com.google.android.gms.version"
-            android:value="7895000" />
+            android:value="7895000"
+            tools:replace="android:value" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCxJXbeUxL96v8fuYBoKU0Ih6CbMOWZs10" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA_PqkHtGOnpUtXPwHxVNCgEAn6p-xtjR0"/>
+            android:value="AIzaSyA_PqkHtGOnpUtXPwHxVNCgEAn6p-xtjR0" />
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity android:name=".Home" >
+            android:label="@string/app_name" />
+        <activity android:name=".Home">
             android:name=".RecipePage"
             android:label="@string/title_activity_recipe_page" >
             <intent-filter>
@@ -41,41 +38,31 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
-        <activity android:name=".Splash" >
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Get_Recipes" >
-        </activity>
-        <activity android:name=".RecipePage">
-        </activity>
-        <activity android:name=".Cookbook" >
-        </activity>
-        <activity android:name=".Find_Ingredients" >
-        </activity>
-        <activity android:name=".Refrigerator" >
-        </activity>
-        <activity android:name=".Never_Cookbook" >
-        </activity>
-        <activity android:name=".Amazon_Ordering" >
-        </activity>
-        <activity android:name=".AddIngredient" >
-        </activity>
+        <activity android:name=".Get_Recipes" />
+        <activity android:name=".RecipePage" />
+        <activity android:name=".Cookbook" />
+        <activity android:name=".Find_Ingredients" />
+        <activity android:name=".Refrigerator" />
+        <activity android:name=".Never_Cookbook" />
+        <activity android:name=".Amazon_Ordering" />
+        <activity android:name=".AddIngredient" />
         <activity
             android:name=".CookBookDummyActivity"
-            android:label="@string/title_activity_cook_book_dummy" >
-        </activity>
+            android:label="@string/title_activity_cook_book_dummy" />
         <activity
             android:name=".HomeDummyActivity"
-            android:label="@string/title_activity_home_dummy" >
-        </activity>
+            android:label="@string/title_activity_home_dummy" />
         <activity
             android:name=".FridgeDummyActivity"
-            android:label="@string/title_activity_fridge_dummy" >
-        </activity>
+            android:label="@string/title_activity_fridge_dummy" />
+        <activity android:name=".RecipeDetail" />
     </application>
 
 </manifest>
