@@ -3,7 +3,9 @@ package com.example.iainchf.helloworld;
 import android.provider.BaseColumns;
 
 /**
- * Created by iainchf on 11/9/15.
+ * Contract between all of the classes that use the SQLite database,
+ * to use the same Table and Column names.
+ * @author Iain Raleigh <iain.raleigh.dev@gmail.com>
  */
 public final class SQLiteTablesContract {
 

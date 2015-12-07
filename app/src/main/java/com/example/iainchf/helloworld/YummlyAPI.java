@@ -48,7 +48,34 @@ public class YummlyAPI {
         ids = parseJsonForID(json);
 
         placeInIdList = 0;
+        recipeList = new ArrayList<>();
     } //done
+
+    /**
+     * getRecipes()
+     * Takes in a url to call REST API, parse the return data, and fill a recipe list.
+     * @return recipeList
+     */
+    public List<Recipe> getFiveRecipes(){
+        if (placeInIdList < ids.size()) {
+            for (int i = placeInIdList; i < placeInIdList + 5 && i < ids.size(); i++) {
+                HttpGetData food2ForkRecipeGetter = new HttpGetData(createGetURL(ids.get(i)));
+                while(food2ForkRecipeGetter.getData() == null);
+                String json = food2ForkRecipeGetter.getData();
+                recipeList.add(parseJsonForRecipes(json));
+            }
+            int oldPlaceInList = placeInIdList;
+            if(recipeList.size() < (placeInIdList + 5)) {
+                placeInIdList += recipeList.size();
+            } else {
+                placeInIdList +=5;
+            }
+            return recipeList.subList(oldPlaceInList,placeInIdList);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
 
     public List<String> parseJsonForID(String json){
         YummlyIdJsonReader idReader = new YummlyIdJsonReader();
@@ -79,10 +106,16 @@ public class YummlyAPI {
         String tempURL = "http://api.yummly.com/v1/api/recipes?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
         // for loop to traverse through the ingredients
         for(String i: ingredients){
+            i = i.toLowerCase().replaceAll("\\s","+");
+
             tempURL += "&allowedIngredient[]=" + i;
         }
         return tempURL;
     } //done
+
+    private String createGetURL(String id){
+        return  "http://api.yummly.com/v1/api/recipe/"+ id +"?_app_id=612599c2&_app_key=48de0f287a32bb809ebc97c99ac31f86";
+    }
 
 
     private class YummlyIdJsonReader {
