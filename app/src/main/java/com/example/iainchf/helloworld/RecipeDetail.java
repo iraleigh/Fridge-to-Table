@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -78,6 +80,41 @@ public class RecipeDetail extends AppCompatActivity {
     public void goToInstructions (View v) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(this.instructions));
         startActivity(browserIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch(id){
+            case R.id.get_recipes:
+                startActivity(new Intent(RecipeDetail.this, RecipePage.class));
+                break;
+            case R.id.filter_recipes:
+                startActivity(new Intent(RecipeDetail.this, Get_Recipes.class));
+                break;
+            case R.id.fridge:
+                startActivity(new Intent(RecipeDetail.this, Refrigerator.class));
+                break;
+            case R.id.find_ingredients:
+                startActivity(new Intent(RecipeDetail.this, Find_Ingredients.class));
+                break;
+            case R.id.cookbook:
+                startActivity(new Intent(RecipeDetail.this, Cookbook.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void setHeightOfListView(ListView listView) {
