@@ -1,17 +1,24 @@
 package com.example.iainchf.helloworld;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +29,10 @@ public class RecipeDetail extends AppCompatActivity {
     private Bitmap bitmap;
     private TextView recipeName;
     private ListView lv;
+    private ImageButton cookbookButton;
+    private ImageView recipeView;
+
+    private Context context;
 
     private String name;
     private String description;
@@ -36,10 +47,16 @@ public class RecipeDetail extends AppCompatActivity {
     private String idFromAPI;
     private String imageUrl;
 
+    private Boolean addToCookbook;
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        this.context = getApplicationContext();
+        this.addToCookbook = true;
 
         Bundle b = getIntent().getExtras();
         name = b.getString("name");
@@ -57,21 +74,24 @@ public class RecipeDetail extends AppCompatActivity {
 
         recipeName = (TextView) findViewById(R.id.recipeName);
         recipeName.setText(name);
-
-        lv = (ListView) findViewById(R.id.listIngredientsView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
-        lv.setAdapter(arrayAdapter);
-        setHeightOfListView(lv);
+        recipeView = (ImageView) findViewById(R.id.recipeImageView);
+        cookbookButton = (ImageButton) findViewById(R.id.addToCookbook);
 
         iv = (ImageView) findViewById(R.id.bcgImage);
         try {
             bitmap = new GetBitmapFromURL().execute(imageUrl).get();
             iv.setImageBitmap(bitmap);
+            recipeView.setImageBitmap(bitmap);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        lv = (ListView) findViewById(R.id.listIngredientsView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
+        lv.setAdapter(arrayAdapter);
+        setHeightOfListView(lv, recipeView, bitmap);
 
     }
 
@@ -80,10 +100,33 @@ public class RecipeDetail extends AppCompatActivity {
         startActivity(browserIntent);
     }
 
-    public static void setHeightOfListView(ListView listView) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void cookbookButtonTapped(View v) {
+        Recipe recipe = new Recipe(name, description, instructions, videoURL, dietFood, hasCaffeine, glutenFree, calories, ingredientList, imageUrl, nameOfAPI, idFromAPI);
+        if(this.addToCookbook) {
+            // add to cookbook
+            SQLiteAPISingletonHandler.getInstance(context).addRecipeToCookbook(recipe);
+            this.cookbookButton.setBackground(getResources().getDrawable(R.drawable.cookbook_button_active));
+            Toast toast = Toast.makeText(context, "Recipe added to cookbook", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER | Gravity.CENTER, 0, 0);
+            toast.show();
+            this.addToCookbook = false;
+        } else {
+            // remove from cookbook
+            SQLiteAPISingletonHandler.getInstance(context).removeRecipeFromCookbook(recipe);
+            this.cookbookButton.setBackground(getResources().getDrawable(R.drawable.cookbook_button_inactive));
+            Toast toast = Toast.makeText(context, "Recipe removed from cookbook", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+            toast.show();
+            this.addToCookbook = true;
+        }
+        Log.d("DDD", Integer.toString(SQLiteAPISingletonHandler.getInstance(context).getCookbook().size()));
+    }
+
+    public static void setHeightOfListView(ListView listView, ImageView recipeView, Bitmap bitmap) {
 
         ListAdapter mAdapter = listView.getAdapter();
-        int totalHeight = 0;
+        int totalHeight = bitmap.getHeight() + 450;
 
         for (int i = 0; i < mAdapter.getCount(); i++) {
             View mView = mAdapter.getView(i, null, listView);
@@ -95,6 +138,8 @@ public class RecipeDetail extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+
+        recipeView.setY(totalHeight - bitmap.getHeight() - 200);
 
     }
 
