@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by iainchf on 9/30/15.
+ * @author Iain Raleigh <iain.raleigh.dev@gmail.com>
+ * The purpose of this Class is to loosely couple the Food 2 Fork API
+ * and handle the requesting and returning of data to the user in a
+ * usable and meaningful way.
  */
 public class Food2ForkAPI extends RecipesProviderAPI {
     private final String API_KEY = "61501f7532d789ba822260444db1efed";
@@ -72,9 +75,8 @@ public class Food2ForkAPI extends RecipesProviderAPI {
     }
 
     /**
-     * getRecipes()
      * Takes in a url to call REST API, parse the return data, and fill a recipe list.
-     * @return recipeList
+     * @return recipeList a list of recipe objects containing recipes from API
      */
     public List<Recipe> getRecipes(){
         if (placeInIdList < ids.size()) {
@@ -90,7 +92,12 @@ public class Food2ForkAPI extends RecipesProviderAPI {
         }
     }
 
-
+    /**
+     * Handles the instantiation and call to subclass Food2ForkIdJsonReader
+     * and return of data
+     * @param json The JSON encoded data from the API
+     * @return a list of IDs
+     */
     private List<String> parseJsonForID(String json){
         Food2ForkIdJsonReader idReader = new Food2ForkIdJsonReader();
         List<String> ids = new ArrayList<>();
@@ -102,6 +109,14 @@ public class Food2ForkAPI extends RecipesProviderAPI {
             return ids;
         }
     }
+
+    /**
+     * Handles the instantiation and call to subclass Food2ForkRecipeJsonReader
+     * and return of data.
+     * @param json The JSON encoded data from the API
+     * @param id used to track Recipe when saving to a database
+     * @return A single Recipe Object containing the recipe info requested
+     */
     public Recipe parseJsonForRecipes(String json, String id){
         Food2ForkRecipeJsonReader recipeReader = new Food2ForkRecipeJsonReader();
         Recipe recipe = new Recipe();
@@ -127,7 +142,14 @@ public class Food2ForkAPI extends RecipesProviderAPI {
         return "http://food2fork.com/api/get?key=" + API_KEY + "&rId=" + id;
     }
 
-
+    /**
+     * @author Iain Raleigh
+     * This hanldes the parsing of the JSON returned from the API
+     * and packages the data into Strings containing IDs of Recipes.
+     * <p>
+     * Specifically it handles retrieving the IDs so more information
+     * can be requested from the API.
+     */
     private class Food2ForkIdJsonReader {
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
